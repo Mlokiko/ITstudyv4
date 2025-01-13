@@ -1,6 +1,6 @@
 # ITstudyv4
 
-Instrukcja uruchomienia projektu:
+<h1>Instrukcja uruchomienia projektu</h1>:
   Baza danych:
     Zainstalowanie PostgreSQL
     Zaimportowanie naszej bazy danych
