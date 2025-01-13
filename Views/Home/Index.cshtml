@@ -1,0 +1,53 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+</div>
+    <p>To potem pozmieniamy, aktualnie umieszczam tutaj wszystkie dostępne linki/podstrony jakie będziemy potrzebować.</p><br />
+
+
+
+<p>Podstrony do stworzenia:</p>
+<p>Dostęp dla każdego (odwiedzający/niezalogowani)</p>
+    <ul>
+        <li>Wszystkie posty</li>
+        <li>Wszystkie tematy</li>
+    <li class="nav-item">
+        <a class="nav-link text-info" asp-area="" asp-controller="Categories" asp-action="ShowAllCategories">Wszystkie Kategorie</a>
+    </li>
+        <li>Regulamin</li>
+        <li>Kontakt</li>
+    </ul>
+
+<p>Dostęp dla Normalnego usera</p>
+    <ul>
+        <li>Tematy bez odpowiedzi</li>
+        <li>NAPOTEM odpisz/napisz post</li>
+    </ul>
+
+<p>Dostęp tylko dla Moderatora (i Admina)</p>
+    <ul>
+        <li></li>
+    </ul>
+
+<p>Dostępne tylko dla admina:</p>
+    <ul>
+        <li>Stwórz Temat</li>
+        <li>Zarządzaj tematami</li>
+    <li class="nav-item">
+        <a class="nav-link text-info" asp-area="" asp-controller="Categories" asp-action="AddNewCategory">Stwórz kategorię</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-info" asp-area="" asp-controller="Categories" asp-action="EditCategory">Zarządzaj kategoriami</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-info" asp-area="" asp-controller="Admin" asp-action="ShowAllUsers">Pokaż wszystkich użytkowników</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-info" asp-area="" asp-controller="Admin" asp-action="EditUser">Zarządzaj użytkownikiem (zmień rolę, usuń itd)</a>
+    </li>
+    </ul>
+
+    <p>Zarządzaj swoim kontem</p>
