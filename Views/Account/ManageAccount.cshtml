@@ -1,4 +1,20 @@
-﻿@{
+﻿@model ForumUser
+@{
     ViewData["Title"] = "ManageAccount";
 }
-<p>Ustawienia konta</p>
+
+<div class="row d-flex align-items-center justify-content-center">
+    <div class="col-md-3 card p-3">
+        <h2 class="text-center text-info">Ustawienia konta</h2>
+        <button type="button" class="btn btn-outline-primary">Zmień hasło</button>
+        <button type="button" class="btn btn-outline-primary">Zmień zdjęcie profilowe</button>
+        <p>E-mail: [Email użytkownika]</p>
+        <button type="button" class="btn btn-outline-primary">Zmień E-mail</button>
+        <p>Data Dołączenia:  [Data]</p></>
+        <p>"O sobie": [tutaj wstawimy bio]</p>
+        <button type="button" class="btn btn-outline-primary">Zmień "O sobie"</button>
+        <button type="button" class="btn btn-danger">Usuń konto [Notka że nie usunie/usunie to posty]</button>
+        <br /><br />
+        <p>Ewentualne punkty, DMy [Wątpie że nam się uda]</p>
+    </div>
+</div>

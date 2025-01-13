@@ -84,6 +84,15 @@ namespace ITstudyv4.Controllers
         }
         public IActionResult ManageAccount()
         {
+            //metody userManagera:
+            //
+            //ChangeEmailAsync
+            // AddToRolesAsync (może zamiast naszych rang? zmodyfikować istniejące już (i tak się tworzą w bazie danych)
+            // ChangePasswordAsync
+            // DeleteAsync (to chyba usuwa użytkownika)
+            // 
+            // FindByLoginAsync (przyda się na potem, przy tworzeniu strony wyszukiwania userów)
+
             return View();
         }
     }

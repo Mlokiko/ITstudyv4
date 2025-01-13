@@ -9,9 +9,10 @@
 
 
 
-<p>Podstrony do stworzenia:</p>
-<p>Dostęp dla każdego (odwiedzający/niezalogowani)</p>
+<h2>Podstrony do stworzenia:</h2><br />
+<h3>Dostęp dla każdego (odwiedzający/niezalogowani)</h3>
     <ul>
+        <li>Strona główna (na niej wstępnie ostatnie tematy powinny się wyświetlać</li>
         <li>Wszystkie posty</li>
         <li>Wszystkie tematy</li>
     <li class="nav-item">
@@ -21,21 +22,27 @@
         <li>Kontakt</li>
     </ul>
 
-<p>Dostęp dla Normalnego usera</p>
+<h3>Dostęp dla Normalnego usera</h3>
     <ul>
         <li>Tematy bez odpowiedzi</li>
         <li>NAPOTEM odpisz/napisz post</li>
     </ul>
 
-<p>Dostęp tylko dla Moderatora (i Admina)</p>
+<h3>Dostęp tylko dla Moderatora (i Admina):</h3>
     <ul>
-        <li></li>
+        <li>Zbanuj Użytkownika?</li>
+        <li>Ukryj/usuń temat?</li>
+        <li>Ukryj/usuń post?</li>
     </ul>
 
-<p>Dostępne tylko dla admina:</p>
+<h3>Dostępne tylko dla admina:</h3>
     <ul>
-        <li>Stwórz Temat</li>
-        <li>Zarządzaj tematami</li>
+    <li class="nav-item">
+        <a class="nav-link text-info" asp-area="" asp-controller="Threads" asp-action="AddNewThread">Stwórz Temat</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-info" asp-area="" asp-controller="Threads" asp-action="EditThread">Zarządzaj Tematami</a>
+    </li>
     <li class="nav-item">
         <a class="nav-link text-info" asp-area="" asp-controller="Categories" asp-action="AddNewCategory">Stwórz kategorię</a>
     </li>
@@ -49,5 +56,3 @@
         <a class="nav-link text-info" asp-area="" asp-controller="Admin" asp-action="EditUser">Zarządzaj użytkownikiem (zmień rolę, usuń itd)</a>
     </li>
     </ul>
-
-    <p>Zarządzaj swoim kontem</p>
