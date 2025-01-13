@@ -1,8 +1,19 @@
 ﻿@using ITstudyv4.ViewModels
-@model IEnumerable<Categories>
+@model Categories
 
 @{
     ViewData["Title"] = "AddNewCategory";
 }
+<h2 class="text-center text-info">Dodawanie nowej kategori</h2>
 
-<p>Dodawanie nowej kategori</p>
+<form method="post">
+    <div class="form-group">
+        <label for="Name">Nazwa</label>
+        <input type="text" class="form-control" id="Name" name="Name" />
+    </div>
+    <div class="form-group">
+        <label for="Name">Opis</label>
+        <input type="text" class="form-control" id="Description" name="Description" />
+    </div>
+    <button type="submit" class="btn btn-primary">Dodaj</button>
+</form>
