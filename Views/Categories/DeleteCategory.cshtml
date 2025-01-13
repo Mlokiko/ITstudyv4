@@ -1,0 +1,19 @@
+﻿@model ITstudyv4.Models.Categories
+
+@{
+    ViewData["Title"] = "Usuń kategorię";
+}
+<h2 class="text-center text-info">Usuń Kategorię</h2>
+
+<h3>Jesteś pewien że chcesz usunąć tą kategorię?</h3>
+
+<div>
+    <p>Nazwa: @Model.Name</p>
+    <p> Opis: @Model.Description</p>
+</div>
+
+<form method="post">
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-danger">Usuń</button>
+    <a href="@Url.Action("Index", "Category")" class="btn btn-secondary">Anuluj</a>
+</form>

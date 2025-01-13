@@ -1,0 +1,37 @@
+﻿@using ITstudyv4.ViewModels
+@model IEnumerable<Categories>
+
+@{
+    ViewData["Title"] = "Zarządzaj kategoriami";
+}
+
+<h2 class="text-center text-info">Zarządzanie kategoriami</h2>
+
+<div>
+    <a href="@Url.Action("AddNewCategory", "Categories")" class="btn btn-primary">Stwórz nową</a>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nazwa</th>
+            <th>Opis</th>
+            <th>Akcja</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var category in Model)
+        {
+            <tr>
+                <td>@category.Id</td>
+                <td>@category.Name</td>
+                <td>@category.Description</td>
+                <td>
+                    <a href="@Url.Action("EditCategory", "Categories", new { id = category.Id })" class="btn btn-warning">Edytuj</a>
+                    <a href="@Url.Action("DeleteCategory", "Categories", new { id = category.Id })" class="btn btn-danger">Usuń</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

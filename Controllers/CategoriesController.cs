@@ -1,6 +1,7 @@
 ﻿using ITstudyv4.Data;
 using ITstudyv4.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -15,11 +16,6 @@ namespace ITstudyv4.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         public IActionResult ShowAllCategories()
         {
             var categories = _context.Categories.ToList();
@@ -32,12 +28,11 @@ namespace ITstudyv4.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]  // wciąż nie wiem czy to coś zminia - czy mamy to zaimplementowane?
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddNewCategory([Bind("Name,Description")] Categories category)
         {
             if (ModelState.IsValid)
             {
-                Categories cat = new();
                 _context.Add(category);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(ShowAllCategories));
@@ -46,9 +41,118 @@ namespace ITstudyv4.Controllers
             return View(category);
         }
 
-        public IActionResult EditCategory()
+        public async Task<IActionResult> EditCategory(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var category = await _context.Categories.FindAsync(id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+            return View(category);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditCategory(int id, [Bind("Id,Name,Description")] Categories category)
+        {
+            if (id != category.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(category);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!_context.Categories.Any(e => e.Id == category.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(ManageCategory));
+            }
+            return View(category);
+        }
+
+        public async Task<IActionResult> ManageCategory()
+        {
+            var categories = await _context.Categories.ToListAsync();
+            return View(categories);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ManageCategory(int id, [Bind("id,Name,Description")] Categories category)
+        {
+            if (id != category.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(category);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!_context.Categories.Any(x => x.Id == category.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(ManageCategory));
+            }
+            return View(category);
+        }
+
+        public async Task<IActionResult> DeleteCategory(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+            return View(category);
+        }
+
+        [HttpPost, ActionName("DeleteCategory")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var category = await _context.Categories.FindAsync(id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+            _context.Categories.Remove(category);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(ManageCategory));
         }
     }
 }
