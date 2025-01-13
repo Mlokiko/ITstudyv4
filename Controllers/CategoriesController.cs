@@ -32,7 +32,7 @@ namespace ITstudyv4.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]  // wciąż nie wiem czy to coś zminia - czy mamy to zaimplementowane?
         public async Task<IActionResult> AddNewCategory([Bind("Name,Description")] Categories category)
         {
             if (ModelState.IsValid)
@@ -42,6 +42,7 @@ namespace ITstudyv4.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(ShowAllCategories));
             }
+
             return View(category);
         }
 
