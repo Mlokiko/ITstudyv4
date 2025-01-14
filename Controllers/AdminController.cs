@@ -10,7 +10,6 @@ namespace ITstudyv4.Controllers
 {
     public class AdminController : Controller
     {
-        // te RoleManager nie jest aktualnie potrzebne, ale przy modyfikacji sie przyda
         private readonly UserManager<ForumUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly AppDbContext _context;

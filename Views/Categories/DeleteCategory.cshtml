@@ -15,5 +15,5 @@
 <form method="post">
     @Html.AntiForgeryToken()
     <button type="submit" class="btn btn-danger">Usuń</button>
-    <a href="@Url.Action("Index", "Category")" class="btn btn-secondary">Anuluj</a>
+    <a href="@Url.Action("ManageCategory", "Categories")" class="btn btn-secondary">Anuluj</a>
 </form>
