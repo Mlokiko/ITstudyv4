@@ -42,7 +42,7 @@ namespace ITstudyv4.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("ITstudyv4.Models.ForumUser", b =>
@@ -164,7 +164,7 @@ namespace ITstudyv4.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Posts", (string)null);
                 });
 
             modelBuilder.Entity("ITstudyv4.Models.Threads", b =>
@@ -204,7 +204,7 @@ namespace ITstudyv4.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Threads");
+                    b.ToTable("Threads", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

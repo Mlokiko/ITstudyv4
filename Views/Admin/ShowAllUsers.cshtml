@@ -1,10 +1,11 @@
-﻿@model IEnumerable<ForumUser>
+﻿@using ITstudyv4.ViewModels
+@model IEnumerable<UserWithRolesVM>
 
 @{ViewData["Title"] = "Wszyscy użytkownicy";}
 
 <h2 class="text-center text-info">Wszyscy użytkownicy</h2>
-<table class="table">
-    <thead>
+<table class="table table-striped table-hover">
+    <thead class="table-dark">
         <tr>
             <th>ID</th>
             <th>Nazwa użytkownika</th>
@@ -17,13 +18,13 @@
         @foreach (var user in Model)
         {
             <tr>
-                <td>@user.Id</td>
+                <td>@user.UserId</td>
                 <td>@user.UserName</td>
                 <td>@user.JoinDate</td>
-                <td>temp</td>@* <td>@user.Rank.Name</td> *@
+                <td>@user.Role</td>
                 <td>
-                    <a href="@Url.Action("EditCategory", "Categories", new { id = user.Id })" class="btn btn-warning">Moderuj</a>
-                    <a href="@Url.Action("DeleteCategory", "Categories", new { id = user.Id })" class="btn btn-danger">Usuń</a>
+                    <a href="@Url.Action("EditCategory", "Categories", new { id = user.UserId })" class="btn btn-warning">Moderuj</a>
+                    <a href="@Url.Action("DeleteCategory", "Categories", new { id = user.UserId })" class="btn btn-danger">Usuń</a>
                 </td>
             </tr>
         }
