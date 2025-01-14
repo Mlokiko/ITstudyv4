@@ -1,0 +1,21 @@
+﻿@model ITstudyv4.Models.ForumUser
+
+@{
+    ViewData["Title"] = "Usuń Użytkownika";
+}
+<h2 class="text-center text-info">Usuń Użytkownika</h2>
+
+<h3>Jesteś pewien że chcesz usunąć tego użytkownika?</h3>
+
+<div>
+    <p>Nazwa użytkownika: @Model.UserName</p>
+    <p>Email: @Model.Email</p>
+    <p>Zdjęcie profilowe: @Model.ProfilePictureURL</p>
+    <p>Ranga: TODO</p>
+</div>
+
+<form asp-action="DeleteUserConfirmed" method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <button type="submit" class="btn btn-danger">Usuń</button>
+    <a asp-action="ShowAllUsers" class="btn btn-secondary">Anuluj</a>
+</form>

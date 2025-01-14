@@ -4,6 +4,7 @@ using ITstudyv4.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ITstudyv4.Controllers
 {
@@ -12,10 +13,12 @@ namespace ITstudyv4.Controllers
         // te RoleManager nie jest aktualnie potrzebne, ale przy modyfikacji sie przyda
         private readonly UserManager<ForumUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        public AdminController(UserManager<ForumUser> userManager, RoleManager<IdentityRole> roleManager)
+        private readonly AppDbContext _context;
+        public AdminController(UserManager<ForumUser> userManager, RoleManager<IdentityRole> roleManager, AppDbContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _context = context;
         }
         public async Task<IActionResult> ShowAllUsers()
         {
@@ -36,9 +39,112 @@ namespace ITstudyv4.Controllers
             }
             return View(userRolesVM);
         }
-        public IActionResult EditUser()
+        public async Task<IActionResult> EditUser(string id)
         {
-            return View();
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+            var model = new EditUserVM
+            {
+                UserId = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                Roles = roles.ToList(),
+                ProfilePictureURL = user.ProfilePictureURL,
+                Bio = user.Bio
+            };
+
+            ViewBag.AllRoles = _roleManager.Roles.Select(r => r.Name).ToList();
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditUser(EditUserVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.AllRoles = _roleManager.Roles.Select(r => r.Name).ToList();
+                return View(model);
+            }
+
+            var user = await _userManager.FindByIdAsync(model.UserId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.UserName = model.UserName;
+            user.Email = model.Email;
+            user.Bio = model.Bio;
+            user.ProfilePictureURL = model.ProfilePictureURL;
+
+            var updateResult = await _userManager.UpdateAsync(user);
+            if (!updateResult.Succeeded)
+            {
+                foreach (var error in updateResult.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+
+                ViewBag.AllRoles = _roleManager.Roles.Select(r => r.Name).ToList();
+                return View(model);
+            }
+
+            // Update roles
+            var currentRoles = await _userManager.GetRolesAsync(user);
+            var rolesToAdd = model.Roles.Except(currentRoles).ToList();
+            var rolesToRemove = currentRoles.Except(model.Roles).ToList();
+
+            if (rolesToAdd.Any())
+            {
+                await _userManager.AddToRolesAsync(user, rolesToAdd);
+            }
+
+            if (rolesToRemove.Any())
+            {
+                await _userManager.RemoveFromRolesAsync(user, rolesToRemove);
+            }
+
+            TempData["Message"] = "Użytkownik zaktualizowany.";
+            return RedirectToAction("ShowAllUsers");
+        }
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteUserConfirmed(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                TempData["Message"] = "Użytkownik usunięty.";
+                return RedirectToAction("ShowAllUsers");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return View(user);
         }
     }
 }
