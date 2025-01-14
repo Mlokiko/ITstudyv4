@@ -1,4 +1,32 @@
-﻿@{
-    ViewData["Title"] = "Wszyscy użytkownicy";
-}
-<p>Powinno pokazać wszystkich użytkowników</p>
+﻿@model IEnumerable<ForumUser>
+
+@{ViewData["Title"] = "Wszyscy użytkownicy";}
+
+<h2 class="text-center text-info">Wszyscy użytkownicy</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nazwa użytkownika</th>
+            <th>Data dołączenia</th>
+            <th>Ranga</th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Id</td>
+                <td>@user.UserName</td>
+                <td>@user.JoinDate</td>
+                <td>temp</td>@* <td>@user.Rank.Name</td> *@
+                <td>
+                    <a href="@Url.Action("EditCategory", "Categories", new { id = user.Id })" class="btn btn-warning">Moderuj</a>
+                    <a href="@Url.Action("DeleteCategory", "Categories", new { id = user.Id })" class="btn btn-danger">Usuń</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<p>W Moderuj powinny znajdować się opcje: Zbanuj, Nadaj rangę. Powinno też wyświetlać wszystkie informacje na temat użytkownika</p>

@@ -1,16 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ITstudyv4.Data;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ITstudyv4.Controllers
 {
     public class AdminController : Controller
     {
-        public IActionResult Index()
+        private readonly AppDbContext _context;
+        public AdminController(AppDbContext context)
         {
-            return View();
+            _context = context;
         }
         public IActionResult ShowAllUsers()
         {
-            return View();
+            var users = _context.ForumUser.ToList();
+            return View(users);
         }
         public IActionResult EditUser()
         {
