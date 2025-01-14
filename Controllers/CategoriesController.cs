@@ -35,7 +35,7 @@ namespace ITstudyv4.Controllers
             {
                 _context.Add(category);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(ShowAllCategories));
+                return RedirectToAction(nameof(ManageCategory));
             }
 
             return View(category);

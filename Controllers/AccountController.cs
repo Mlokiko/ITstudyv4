@@ -93,7 +93,7 @@ namespace ITstudyv4.Controllers
             var user = await userManager.GetUserAsync(User);
             if (user == null)
             {
-                return RedirectToAction("Login", "Auth"); // przekierownie do logowania jeśli nie zalogowany, raczej jest żle zrobione
+                return RedirectToAction("Index", "Home");
             }
 
             var role = await userManager.GetRolesAsync(user);
@@ -115,6 +115,20 @@ namespace ITstudyv4.Controllers
         public IActionResult ChangeAboutMe()
         {
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeAboutMe(ForumUser model)
+        {
+            var user = await userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            user.Bio = model.Bio;
+            return RedirectToAction(nameof(ManageAccount));
+
         }
 
         public IActionResult ChangePassword()
