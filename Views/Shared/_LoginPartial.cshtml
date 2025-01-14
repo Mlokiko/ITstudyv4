@@ -1,13 +1,18 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<ForumUser> signInManager
-
+@inject UserManager<ForumUser> userManager
 
 <ul class="navbar-nav">
     @if (signInManager.IsSignedIn(User))
     {
+        var user = await userManager.GetUserAsync(User);
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Witaj, @User.Identity!.Name!
+            @if (!string.IsNullOrEmpty(user?.ProfilePictureURL))
+            {
+                 <img src="@user.ProfilePictureURL" alt="Zdjęcie profilowe" class="img-thumbnail align-items-center rounded-circle" style="max-width: 50px;" />
+            }
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li>

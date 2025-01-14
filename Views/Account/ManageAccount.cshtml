@@ -1,5 +1,5 @@
 ﻿@using ITstudyv4.ViewModels
-@model IEnumerable<UserWithRolesVM>
+@model UserWithRolesVM
 @{
     ViewData["Title"] = "Zarządzanie kontem";
 }
@@ -7,17 +7,36 @@
 <div class="row d-flex align-items-center justify-content-center">
     <div class="col-md-3 card p-3">
         <h2 class="text-center text-info">Ustawienia konta</h2>
-        <br />
-        <button type="button" class="btn btn-outline-primary">Zmień hasło</button>
-        <br />
-        <button type="button" class="btn btn-outline-primary">Zmień zdjęcie profilowe</button>
-        <p>E-mail: [Wstawić email usera]</p>
-        <button type="button" class="btn btn-outline-primary">Zmień E-mail</button>
-        <p>Data Dołączenia:  [Data]</p></>
-        <p>"O sobie": [tutaj wstawimy bio]</p>
-        <button type="button" class="btn btn-outline-primary">Zmień "O sobie"</button>
-        <button type="button" class="btn btn-danger">Usuń konto [Notka że nie usunie/usunie to posty]</button>
-        <br /><br />
-        <p>Ewentualne punkty, DMy [Wątpie że nam się uda]</p>
+        <div class="form-group text-center">
+            @if (!string.IsNullOrEmpty(Model.ProfilePictureURL))
+            {
+                <img src="@Model.ProfilePictureURL" alt="Zdjęcie profilowe" class="img-thumbnail align-items-center rounded-circle" style="max-width: 150px;" />
+            }
+            else
+            {
+                <p>Nie ustawiono zdjęcia profilowego.</p>
+            }
+        </div>
+        <a href="@Url.Action("ChangeProfilePicture", "Account", new { id = Model.UserId })" class="btn btn-warning m-1">Zmień zdjęcie profilowe</a>
+        <p>E-mail: @Model.Email</p>
+        <a href="@Url.Action("ChangeEmail", "Account", new { id = Model.UserId })" class="btn btn-warning m-1">Zmień Email</a>
+        <a href="@Url.Action("ChangePassword", "Account", new { id = Model.UserId })" class="btn btn-warning m-1">Zmień hasło</a>
+        <p>Data Dołączenia:  @Model.JoinDate</p></>
+        @if (string.IsNullOrEmpty(Model.Bio)){
+            <p>O sobie: Brak Opisu</p>
+        }
+        else
+        {
+            @Model.Bio
+        }
+        </p>
+        <a href="@Url.Action("ChangeAboutMe", "Account", new { id = Model.UserId })" class="btn btn-warning m-1">Zmień "O sobie"</a>
+        <p>Ranga: @Model.Role</p>
+        <a href="@Url.Action("DeleteAccount", "Account", new { id = Model.UserId })" class="btn btn-danger m-1">Usuń konto</a>
+        
     </div>
 </div>
+
+@* Usuń konto [Notka że nie usunie/usunie to posty] *@
+
+@* Ewentualne punkty, DMy [Wątpie że nam się uda] *@

@@ -8,5 +8,7 @@
         public string? JoinDate { get; set; }
         //public IEnumerable<string> Roles { get; set; } // Zakładamy że użytkownik może mieć tylko jedną rolę, dlatego tego nie używamy
         public string? Role { get; set; }
+        public string? ProfilePictureURL { get; set; }
+        public string? Bio { get; set; }
     }
 }

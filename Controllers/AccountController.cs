@@ -3,6 +3,7 @@ using ITstudyv4.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace ITstudyv4.Controllers
 {
@@ -62,6 +63,7 @@ namespace ITstudyv4.Controllers
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     JoinDate = DateTime.UtcNow.Date, // Do wyświetlania możemy użyć .Today, a pełną datę dawać tylko w przypadku zapisywania do bazy
+                    // Dodać dodawanie rangi
                 };
 
                 var result = await userManager.CreateAsync(user, model.Password!);
@@ -85,18 +87,63 @@ namespace ITstudyv4.Controllers
             await signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home"); 
         }
-        public IActionResult ManageAccount()
+        public async Task<IActionResult> ManageAccount()
         {
-            //metody userManagera:
-            //
-            //ChangeEmailAsync
-            // AddToRolesAsync (może zamiast naszych rang? zmodyfikować istniejące już (i tak się tworzą w bazie danych)
-            // ChangePasswordAsync
-            // DeleteAsync (to chyba usuwa użytkownika)
-            // 
-            // FindByLoginAsync (przyda się na potem, przy tworzeniu strony wyszukiwania userów)
+            // Raczej nie potrzebne bo sprawdzamy czy user jest zalogowany w każdej akcji... chyba
+            var user = await userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Auth"); // przekierownie do logowania jeśli nie zalogowany, raczej jest żle zrobione
+            }
 
+            var role = await userManager.GetRolesAsync(user);
+            // albo ForumUser, albo dedykowany ViewModel, ale po co niepotrzebne klasy tworzyć?
+            var model = new UserWithRolesVM
+            {
+                UserId = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                Role = string.Join(", ", role),
+                ProfilePictureURL = user.ProfilePictureURL,
+                Bio = user.Bio,
+                JoinDate = user.JoinDate.ToString("dd/MM/yyyy"),
+            };
+
+            return View(model);
+        }
+
+        public IActionResult ChangeAboutMe()
+        {
+            return View();
+        }
+
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        public IActionResult ChangeEmail()
+        {
+            return View();
+        }
+
+        public IActionResult ChangeProfilePicture()
+        {
+            return View();
+        }
+
+        public IActionResult DeleteAccount()
+        {
             return View();
         }
     }
 }
+
+//metody userManagera:
+//
+//ChangeEmailAsync
+// AddToRolesAsync (może zamiast naszych rang? zmodyfikować istniejące już (i tak się tworzą w bazie danych)
+// ChangePasswordAsync
+// DeleteAsync (to chyba usuwa użytkownika)
+// 
+// FindByLoginAsync (przyda się na potem, przy tworzeniu strony wyszukiwania userów)
