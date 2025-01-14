@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ITstudyv4.Controllers
 {
-    [Authorize]
+    //[Authorize]
+    [AllowAnonymous]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

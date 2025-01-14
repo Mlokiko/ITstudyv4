@@ -14,9 +14,5 @@ namespace ITstudyv4.Models
         [MaxLength(200)]
         public string? ProfilePictureURL { get; set; }
         public string? Bio { get; set; }
-        public int RankId { get; set; }
-
-        public virtual Ranks Rank { get; set; }  // I guess ze nie potrzebne, w AccountControler nie jest wykorzystywane, tutaj wsm też, potem może będą z tego powodu problemy, no ale cóż, pozyjemy zobaczymy
-
     }
 }

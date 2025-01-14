@@ -1,5 +1,6 @@
 using ITstudyv4.Data;
 using ITstudyv4.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,7 +22,16 @@ builder.Services.AddIdentity<ForumUser, IdentityRole>(
         options.Password.RequireNonAlphanumeric = false;
         options.Password.RequireLowercase = false;
     })
-    .AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+    .AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders().AddRoles<IdentityRole>();  //to .AddRoles<IdentityRole>() nie wiem czy jest wymagane
+
+// Jeœli u¿ytkownik nie jest zalogowany, przekieruje do strony logowania, w ka¿dym przypadku,
+// gdy w kodzie nie jest okreœlone jakie wymagane s¹ uprawnienia
+builder.Services.AddAuthorization(options =>
+{
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+});
 
 var app = builder.Build();
 
@@ -33,12 +43,22 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
+// Seedowanie danych z SeedData.cs
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    await SeedData.SeedUsersAndRolesAsync(services);
+}
+
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
 app.UseAuthorization();
+// app.UseAuthentication(); // to chyba nie jest potrzebne, wklejam bo mo¿e sie przydaæ XD
 
 app.MapControllerRoute(
     name: "default",

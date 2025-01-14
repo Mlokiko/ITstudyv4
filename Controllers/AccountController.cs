@@ -17,11 +17,13 @@ namespace ITstudyv4.Controllers
             this.userManager = userManager;
         }
 
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login(LoginVM model)
         {
@@ -41,11 +43,13 @@ namespace ITstudyv4.Controllers
             return View(model);
         }
 
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Register(RegisterVM model)
         {
@@ -58,7 +62,6 @@ namespace ITstudyv4.Controllers
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     JoinDate = DateTime.UtcNow.Date, // Do wyświetlania możemy użyć .Today, a pełną datę dawać tylko w przypadku zapisywania do bazy
-                    RankId = 1                       // Oryginalnie miało być now, ale sie coś spruło z typami z postgresa
                 };
 
                 var result = await userManager.CreateAsync(user, model.Password!);

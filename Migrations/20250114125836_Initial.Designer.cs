@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ITstudyv4.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250112231152_Initial")]
+    [Migration("20250114125836_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -40,7 +40,8 @@ namespace ITstudyv4.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.HasKey("Id");
 
@@ -98,7 +99,6 @@ namespace ITstudyv4.Migrations
                         .HasColumnType("character varying(256)");
 
                     b.Property<string>("PasswordHash")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
@@ -111,9 +111,6 @@ namespace ITstudyv4.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
-                    b.Property<int>("RankId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
 
@@ -121,7 +118,6 @@ namespace ITstudyv4.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("UserName")
-                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
@@ -133,8 +129,6 @@ namespace ITstudyv4.Migrations
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
-
-                    b.HasIndex("RankId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -174,23 +168,6 @@ namespace ITstudyv4.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Posts");
-                });
-
-            modelBuilder.Entity("ITstudyv4.Models.Ranks", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Ranks");
                 });
 
             modelBuilder.Entity("ITstudyv4.Models.Threads", b =>
@@ -363,17 +340,6 @@ namespace ITstudyv4.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("ITstudyv4.Models.ForumUser", b =>
-                {
-                    b.HasOne("ITstudyv4.Models.Ranks", "Rank")
-                        .WithMany()
-                        .HasForeignKey("RankId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Rank");
                 });
 
             modelBuilder.Entity("ITstudyv4.Models.Posts", b =>
