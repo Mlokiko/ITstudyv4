@@ -1,5 +1,34 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using ITstudyv4.ViewModels
+@model UserWithRolesVM
+
 @{
+    ViewData["Title"] = "Zmiana zdjęcia profilowego";
+}
+
+<h2 class="text-center text-info">Zmiana zdjęcia profilowego</h2>
+
+<form asp-action="ChangeProfilePicture" method="post">
+    <input type="hidden" asp-for="UserId" />
+
+    <div class="form-group">
+        <label asp-for="ProfilePictureURL"></label>
+        <input asp-for="ProfilePictureURL" class="form-control" />
+        <span asp-validation-for="ProfilePictureURL" class="text-danger"></span>
+    </div>
+
+    <br />
+    <button type="submit" class="btn btn-primary">Zapisz</button>
+    <a asp-action="ManageAccount" class="btn btn-secondary">Anuluj</a>
+</form>
+<br /><br />
+<p>W polu umieszczamy URL do dostępnego publicznie zdjęcia.</p>
+<p>Schemat taki: https://funnycat.com/catimage.jpg</p>
+<p>Można umieszczać dowolnie wybrany format obsługiwany przez przeglądarki, np. .jpg .png .gif</p>
+<p>Przykładowe zdjęcie: https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZGM5cnNmcmVoZW5hd2lzdXF0eGl2eG5jc3M5MTZ4dmlqanNhMW10dSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4ZaVOvh0M3q7c6YuE2/giphy.gif</p>
+
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
 }

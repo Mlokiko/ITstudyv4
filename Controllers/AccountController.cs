@@ -112,23 +112,50 @@ namespace ITstudyv4.Controllers
             return View(model);
         }
 
-        public IActionResult ChangeAboutMe()
+        public async Task<IActionResult> ChangeAboutMe(string id)
         {
-            return View();
+            var user = await userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var model = new UserWithRolesVM
+            {
+                UserId = user.Id,
+                Bio = user.Bio
+            };
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ChangeAboutMe(ForumUser model)
+        public async Task<IActionResult> ChangeAboutMe(UserWithRolesVM model)
         {
-            var user = await userManager.GetUserAsync(User);
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await userManager.FindByIdAsync(model.UserId);
             if (user == null)
             {
-                return RedirectToAction("Index", "Home");
+                return NotFound();
             }
-            user.Bio = model.Bio;
-            return RedirectToAction(nameof(ManageAccount));
 
+            user.Bio = model.Bio;
+
+            var updateResult = await userManager.UpdateAsync(user);
+            if (!updateResult.Succeeded)
+            {
+                foreach (var error in updateResult.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+                return View(model);
+            }
+
+            TempData["Message"] = "Zaktualizowano 'O sobie'.";
+            return RedirectToAction("ManageAccount");
         }
 
         public IActionResult ChangePassword()
@@ -136,19 +163,161 @@ namespace ITstudyv4.Controllers
             return View();
         }
 
-        public IActionResult ChangeEmail()
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordVM model)
         {
-            return View();
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            var result = await userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+            if (result.Succeeded)
+            {
+                TempData["Message"] = "Password changed successfully.";
+                return RedirectToAction("ManageAccount");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return View(model);
         }
 
-        public IActionResult ChangeProfilePicture()
+        public async Task<IActionResult> ChangeEmail(string id)
         {
-            return View();
+            var user = await userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var model = new UserWithRolesVM
+            {
+                UserId = user.Id,
+                Email = user.Email
+            };
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeEmail(UserWithRolesVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await userManager.FindByIdAsync(model.UserId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.Email = model.Email;
+
+            var updateResult = await userManager.UpdateAsync(user);
+            if (!updateResult.Succeeded)
+            {
+                foreach (var error in updateResult.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+                return View(model);
+            }
+
+            TempData["Message"] = "Zaktualizowano Email.";
+            return RedirectToAction("ManageAccount");
         }
 
-        public IActionResult DeleteAccount()
+        public async Task<IActionResult> ChangeProfilePicture(string id)
         {
-            return View();
+            var user = await userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var model = new UserWithRolesVM
+            {
+                UserId = user.Id,
+                ProfilePictureURL = user.ProfilePictureURL
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeProfilePicture(UserWithRolesVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await userManager.FindByIdAsync(model.UserId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.ProfilePictureURL = model.ProfilePictureURL;
+
+            var updateResult = await userManager.UpdateAsync(user);
+            if (!updateResult.Succeeded)
+            {
+                foreach (var error in updateResult.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+                return View(model);
+            }
+
+            TempData["Message"] = "Zaktualizowano Zdjęcie profilowe.";
+            return RedirectToAction("ManageAccount");
+        }
+
+        public async Task<IActionResult> DeleteAccount(string id)
+        {
+            var user = await userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteAccountConfirmed(string id)
+        {
+            var user = await userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await userManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                await signInManager.SignOutAsync();
+                TempData["Message"] = "Konto użytkownika zostało usunięte.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return View(user);
         }
     }
 }

@@ -1,5 +1,27 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model ITstudyv4.Models.ForumUser
+
 @{
+    ViewData["Title"] = "Usuń Konto";
 }
+<h2 class="text-center text-info">Usuń Konto</h2>
+
+<h3>Jesteś pewien że chcesz usunąć swoje Konto?</h3>
+
+<div>
+    <p>Nazwa użytkownika: @Model.UserName</p>
+    <p>Email: @Model.Email</p>
+    <p>Zdjęcie profilowe: @Model.ProfilePictureURL</p>
+    <p>Ranga: TODO</p>
+</div>
+
+<form asp-action="DeleteAccountConfirmed" method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <button type="submit" class="btn btn-danger">Usuń</button>
+    <a asp-action="ManageAccount" class="btn btn-secondary">Anuluj</a>
+</form>
+
+@* w hidden jest id podawane - teoretycznie wystarczy zmodyfikować tego posta i można usunąć dowolnego użytkownika, gdzie nie chcemy żeby się userzy nawzajem usuwali...*@
+@* Ale na dobrą sprawe, jest to tak długie że chyba nie ma szansy na takie frywolne "usuwanie"*@
+
+@* <input type="hidden" asp-for="UserId" /> *@
+
