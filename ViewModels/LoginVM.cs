@@ -13,9 +13,6 @@ namespace ITstudyv4.ViewModels
         [Display(Name = "Hasło")]
         public string? Password { get; set; }
 
-        //[Display(Name = "Powtórz hasło")]
-        //public string? Password2 { get; set; }
-
         [Display(Name = "Zapamiętaj mnie")]
         public bool RememberMe { get; set; }
     }

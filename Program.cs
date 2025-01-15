@@ -65,3 +65,6 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+// Banowanie u¿ytkowników mo¿emy zrobiæ na zasadzie rang/ró³ - ranga "zbanowany" która bêdzie wykluczaæ z funkcjonalnoœci normalnego usera... ¿e te¿ o tym wczeœniej nie pomyœla³em
+// Usuwanie samego siebie z poziomu /admin/ShowAllUsers nie wylogowywuje ani nie zmienia aktualnego stanu - tzn. mo¿na wci¹¿ przegl¹daæ projekt bez problemu jako user

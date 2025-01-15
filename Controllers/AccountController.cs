@@ -67,6 +67,7 @@ namespace ITstudyv4.Controllers
                 };
 
                 var result = await userManager.CreateAsync(user, model.Password!);
+                await userManager.AddToRoleAsync(user, "Użytkownik");  // Tak jakby bez sprawdzania czy rola istnieje, ale to i tak nie powinno się wydarzyć
 
                 if (result.Succeeded)
                 {
