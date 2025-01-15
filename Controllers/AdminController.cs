@@ -32,6 +32,7 @@ namespace ITstudyv4.Controllers
                     UserId = user.Id,
                     UserName = user.UserName,
                     Email = user.Email,
+                    ProfilePictureURL = user.ProfilePictureURL,
                     JoinDate = user.JoinDate.ToString("dd/MM/yyyy"),
                     Role = string.Join(", ", role)
                 });

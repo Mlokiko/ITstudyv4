@@ -63,7 +63,6 @@ namespace ITstudyv4.Controllers
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     JoinDate = DateTime.UtcNow.Date, // Do wyświetlania możemy użyć .Today, a pełną datę dawać tylko w przypadku zapisywania do bazy
-                    // Dodać dodawanie rangi
                 };
 
                 var result = await userManager.CreateAsync(user, model.Password!);

@@ -8,6 +8,7 @@
     <thead class="table-dark">
         <tr>
             <th>ID</th>
+            <th>Profilowe</th>
             <th>Nazwa użytkownika</th>
             <th>Email</th>
             <th>Data dołączenia</th>
@@ -20,6 +21,16 @@
         {
             <tr>
                 <td>@user.UserId</td>
+                <td>
+                        @if (!string.IsNullOrEmpty(@user.ProfilePictureURL))
+                        {
+                            <img src="@user.ProfilePictureURL" alt="Zdjęcie profilowe" class="img-thumbnail align-items-center rounded-circle" style="max-width: 50px;" />
+                        }
+                        else
+                        {
+                            <p>Nie ustawiono zdjęcia profilowego.</p>
+                        }
+                </td>
                 <td>@user.UserName</td>
                 <td>@user.Email</td>
                 <td>@user.JoinDate</td>

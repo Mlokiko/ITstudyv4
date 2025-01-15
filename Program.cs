@@ -68,3 +68,10 @@ app.Run();
 
 // Banowanie u¿ytkowników mo¿emy zrobiæ na zasadzie rang/ró³ - ranga "zbanowany" która bêdzie wykluczaæ z funkcjonalnoœci normalnego usera... ¿e te¿ o tym wczeœniej nie pomyœla³em
 // Usuwanie samego siebie z poziomu /admin/ShowAllUsers nie wylogowywuje ani nie zmienia aktualnego stanu - tzn. mo¿na wci¹¿ przegl¹daæ projekt bez problemu jako user
+
+// Bug który nie wiem czy jest wa¿ny - po usuniêciu wszystkich u¿ytkowników (bez wylogowywania, zwi¹zane z tematem u góry) i ponownym za³adowaniu strony (z w³¹czon¹ opcj¹ "remember me"), nie wyœwietla siê profilowe w górnym prawym rogu, i nie da siê wejœæ do panelu konta. Trzeba i wylogowaæ i wtedy dzia³a
+
+
+// INFO
+
+// Ograniczenia do tworzenia userName s¹ ze standardowego Identity - nie mo¿na u¿ywaæ znaków specjalnych (polskich liter), ale mo¿na u¿ywaæ cyfr i ma³ych liter
