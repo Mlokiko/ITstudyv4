@@ -14,7 +14,9 @@
     <ul>
         <li>Strona główna (na niej wstępnie ostatnie tematy powinny się wyświetlać</li>
         <li>Wszystkie posty</li>
-        <li>Wszystkie tematy</li>
+    <li class="nav-item">
+        <a class="nav-link text-info" asp-area="" asp-controller="Threads" asp-action="ShowAllThreads">Wszystkie Tematy</a>
+    </li>
     <li class="nav-item">
         <a class="nav-link text-info" asp-area="" asp-controller="Categories" asp-action="ShowAllCategories">Wszystkie Kategorie</a>
     </li>
@@ -41,7 +43,7 @@
         <a class="nav-link text-info" asp-area="" asp-controller="Threads" asp-action="AddNewThread">Stwórz Temat</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-info" asp-area="" asp-controller="Threads" asp-action="EditThread">Zarządzaj Tematami</a>
+        <a class="nav-link text-info" asp-area="" asp-controller="Threads" asp-action="ManageThreads">Zarządzaj Tematami</a>
     </li>
     <li class="nav-item">
         <a class="nav-link text-info" asp-area="" asp-controller="Categories" asp-action="AddNewCategory">Stwórz kategorię</a>

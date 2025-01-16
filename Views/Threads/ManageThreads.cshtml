@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Threads>
+
+@{
+    ViewData["Title"] = "Zarządzaj Tematami";
+}
+
+<h2 class="text-center text-info">Zarządzanie Tematami</h2>
+
+<div>
+    <a href="@Url.Action("AddNewThread", "Threads")" class="btn btn-primary">Stwórz nowy temat</a>
+</div><br />
+
+<table class="table table-striped table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Nazwa</th>
+            <th>Kategoria</th>
+            <th>Utworzony</th>
+            <th>Liczba wyświetleń</th>
+            <th>Liczba postów</th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var thread in Model)
+        {
+                <tr>
+                    <td>@thread.Id</td>
+                    <td>@thread.Title</td>
+                    <td>@thread.Category.Name</td>
+                    <td>@thread.CreatedAt</td>
+                    <td>@thread.Views</td>
+                    <td>@thread.Answers</td>
+                    <td>
+                        <a href="@Url.Action("Editthread", "Threads", new { id = thread.Id })" class="btn btn-warning">Edytuj</a>
+                        <a href="@Url.Action("Deletethread", "Threads", new { id = thread.Id })" class="btn btn-danger">Usuń</a>
+                    </td>
+                </tr>
+        }
+    </tbody>
+</table>
