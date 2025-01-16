@@ -33,10 +33,13 @@ namespace ITstudyv4.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddNewThread([Bind("Name,Categories")] Thread thread)
+        public async Task<IActionResult> AddNewThread([Bind("Title,Categories")] Threads thread)
         {
             if (ModelState.IsValid)
             {
+                thread.CreatedAt = DateTime.UtcNow;
+                thread.Views = 0;
+                //thread.CategoryId = _context.Categories.FirstOrDefault(c => c.Name == thread.Category)?.Id ?? 0;
                 _context.Add(thread);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(ManageThreads));

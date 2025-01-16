@@ -1,5 +1,7 @@
 ﻿using ITstudyv4.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace ITstudyv4.Data
 {
@@ -168,6 +170,51 @@ namespace ITstudyv4.Data
                     await userManager.AddToRoleAsync(uzytkownik4, "Użytkownik");
                 }
             }
+        }
+        public static void SeedCategories(IServiceProvider serviceProvider)
+        {
+            using var context = new AppDbContext(
+            serviceProvider.GetRequiredService<DbContextOptions<AppDbContext>>());
+
+            if (context.Categories.Any())
+                return;
+
+            context.Categories.AddRange(
+                new Categories { Id = 1, Name = "Programowanie", Description = "Wszystko o programowaniu" },
+                new Categories { Id = 2, Name = "Hardware", Description = "Wszystko  o sprzęcie komputerowym - od smartfonów po przełączniki" },
+                new Categories { Id = 3, Name = "OS", Description = "Wszystko związane z systemami operacyjnymi" },
+                new Categories { Id = 4, Name = "OFFTOPIC", Description = "Wszystkie tematy niezwiązane z Informatyką" }
+            );
+            context.SaveChanges();
+        }
+        public static void SeedThreads(IServiceProvider serviceProvider)
+        {
+            using var context = new AppDbContext(
+            serviceProvider.GetRequiredService<DbContextOptions<AppDbContext>>());
+
+            if (context.Threads.Any())
+                return;
+            context.Threads.AddRange(
+                new Threads { Id = 1, Title = "C# - ASP.NET core MVC - jak stworzyć projekt?", CreatedAt = DateTime.UtcNow, Views = 45, UserId = "", CategoryId = 1, AnswersId = 1 },
+                new Threads { Id = 2, Title = "C++ - Jak zrobić kalkulator?", CreatedAt = DateTime.UtcNow, Views = 200, UserId = "", CategoryId = 1, AnswersId = 2 },
+                new Threads { Id = 3, Title = "Haskell - co to?", CreatedAt = DateTime.UtcNow, Views = 5, UserId = "", CategoryId = 2, AnswersId = 3 }
+            );
+            context.SaveChanges();
+        }
+        public static void SeedPosts(IServiceProvider serviceProvider)
+        {
+            using var context = new AppDbContext(
+            serviceProvider.GetRequiredService<DbContextOptions<AppDbContext>>());
+
+            if (context.Posts.Any())
+                return;
+
+            context.Posts.AddRange(
+                new Posts { Id = 1, Content = "klikasz utwórz projekt i wybierasz ASP.NET core MVC, tyle", CreatedDate = DateTime.UtcNow, Edited = false, UserId = "", ThreadId = 1},
+                new Posts { Id = 2, Content = "wpisujesz w ChatGPT co chcesz i dostajesz gotowe rozwiązanie", CreatedDate = DateTime.UtcNow, Edited = false, UserId = "", ThreadId = 1 },
+                new Posts { Id = 3, Content = "Zamykam temat - nie rozmawiamy tutaj o czarnej magii", CreatedDate = DateTime.UtcNow, Edited = false, UserId = "", ThreadId = 1 }
+            );
+            context.SaveChanges();
         }
     }
 }
