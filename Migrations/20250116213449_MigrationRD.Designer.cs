@@ -3,6 +3,7 @@ using System;
 using ITstudyv4.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ITstudyv4.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250116213449_MigrationRD")]
+    partial class MigrationRD
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -175,7 +178,7 @@ namespace ITstudyv4.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AnswersId")
+                    b.Property<int>("AnswersId")
                         .HasColumnType("integer");
 
                     b.Property<int>("CategoryId")
@@ -361,7 +364,9 @@ namespace ITstudyv4.Migrations
                 {
                     b.HasOne("ITstudyv4.Models.Posts", "Answers")
                         .WithMany()
-                        .HasForeignKey("AnswersId");
+                        .HasForeignKey("AnswersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ITstudyv4.Models.Categories", "Category")
                         .WithMany()

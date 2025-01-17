@@ -3,9 +3,10 @@
 @{
     ViewData["Title"] = "Wszystkie kategorie";
 }
-<h2 class="text-center text-info">Wszystkie kategorie</h2>
-<table class="table table-striped table-hover">
-    <thead class="table-dark">
+
+<h1>Wszystkie Kategorie</h1>
+<table class="table">
+    <thead>
         <tr>
             <th>Nazwa</th>
             <th>Opis</th>
@@ -15,7 +16,11 @@
         @foreach (var category in Model)
         {
             <tr>
-                <td>@category.Name</td>
+                <td>
+                    <a asp-controller="Threads" asp-action="ShowAllThreads" asp-route-categoryId="@category.Id">
+                        @category.Name
+                    </a>
+                </td>
                 <td>@category.Description</td>
             </tr>
         }

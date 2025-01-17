@@ -1,0 +1,19 @@
+﻿@model Posts
+
+@{
+    ViewData["Title"] = "Dodaj nowy post";
+}
+
+<h1>Dodaj nowy post</h1>
+
+<form asp-action="AddNewPost" method="post">
+    <div class="form-group">
+        <label for="Content">Treść</label>
+        <textarea id="Content" name="Content" class="form-control" rows="4" required></textarea>
+    </div>
+    <input type="hidden" asp-for="ThreadId" />
+    <input type="hidden" asp-for="UserId" />
+    <button type="submit" class="btn btn-primary">Dodaj</button>
+</form>
+
+<a asp-action="ShowAllPosts" asp-route-threadId="@Model.ThreadId" class="btn btn-secondary mt-3">Powrót do listy postów</a>
