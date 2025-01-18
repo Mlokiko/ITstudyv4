@@ -1,5 +1,21 @@
-﻿@{
-    ViewData["Title"] = "Edycja temat";
+﻿@using ITstudyv4.ViewModels
+@model Threads
+
+@{
+    ViewData["Title"] = "Edycja tematu";
 }
 
-<p>Edycja tematu</p>
+<h2 class="text-center text-info">Edycja Tematu</h2>
+
+<form method="post">
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="form-group">
+        <label for="Title">Tytuł</label>
+        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Zapisz zmianę</button>
+</form>

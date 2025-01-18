@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Posts>
+﻿@using System.Security.Claims
+@model IEnumerable<Posts>
 
 @{
     ViewData["Title"] = "Posty";
@@ -24,6 +25,12 @@
                 <td>@post.User?.UserName</td>
                 <td>@post.CreatedDate.ToShortDateString()</td>
                 <td>@(post.Edited ? "Tak" : "Nie")</td>
+
+                @if (post.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier) || User.IsInRole("Admin") || User.IsInRole("Moderator"))
+                {
+                    <td><a asp-controller="Posts" asp-action="EditPost" asp-route-id="@post.Id">Edytuj post</a></td>
+                    <td><a asp-controller="Posts" asp-action="DeletePost" asp-route-id="@post.Id">Usuń post</a></td>
+                }
             </tr>
         }
     </tbody>

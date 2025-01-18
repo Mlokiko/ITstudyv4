@@ -1,0 +1,11 @@
+﻿@model Posts
+
+<h2>Potwierdź usunięcie postu</h2>
+
+<p>Czy na pewno chcesz usunąć post: <strong>@Model.Content</strong>?</p>
+
+<form asp-action="DeletePost" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Usuń</button>
+    <a asp-action="ShowAllPosts" asp-route-threadId="@Model.ThreadId" class="btn btn-secondary">Anuluj</a>
+</form>

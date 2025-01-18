@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Threads>
+﻿@using System.Security.Claims
+@model IEnumerable<Threads>
 
 @{
     ViewData["Title"] = "Wątki";
@@ -28,7 +29,14 @@
                 <td>@thread.User?.UserName</td>
                 <td>@thread.Views</td>
                 <td>@thread.CreatedAt.ToShortDateString()</td>
+
+                @if (thread.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier) || User.IsInRole("Admin") || User.IsInRole("Moderator"))
+                {
+                    <td><a asp-controller="Threads" asp-action="EditThread" asp-route-id="@thread.Id">Edytuj temat</a></td>
+                    <td><a asp-controller="Threads" asp-action="DeleteThread" asp-route-id="@thread.Id">Usuń temat</a></td>
+                }
             </tr>
         }
+
     </tbody>
 </table>

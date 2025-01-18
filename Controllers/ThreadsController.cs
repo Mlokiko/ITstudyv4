@@ -2,6 +2,7 @@
 using ITstudyv4.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -42,16 +43,24 @@ namespace ITstudyv4.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddNewThread(int categoryId, [Bind("Title")] Threads thread)
         {
-            // Ensure category exists
             var category = await _context.Categories.FindAsync(categoryId);
             if (category == null)
             {
-                ModelState.AddModelError(string.Empty, "The specified category does not exist.");
+                ModelState.AddModelError(string.Empty, "Ta kategoria nie istnieje.");
                 return View(thread);
             }
 
             if (ModelState.IsValid)
             {
+                var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+                if (string.IsNullOrEmpty(userId))
+                {
+                    ModelState.AddModelError(string.Empty, "Musisz być zalogowany, żeby stworzyć temat.");
+                    ViewBag.CategoryId = thread.CategoryId;
+                    return View(thread);
+                }
+                thread.UserId = userId;
                 thread.CategoryId = categoryId;
                 _context.Add(thread);
                 await _context.SaveChangesAsync();
@@ -76,6 +85,14 @@ namespace ITstudyv4.Controllers
             {
                 return NotFound();
             }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userIsAdminOrModerator = User.IsInRole("Admin") || User.IsInRole("Moderator");
+            if (thread.UserId != userId && !userIsAdminOrModerator)
+            {
+                return Forbid();
+            }
+
             return View(thread);
         }
 
@@ -88,11 +105,26 @@ namespace ITstudyv4.Controllers
                 return NotFound();
             }
 
+            var originalThread = await _context.Threads.FindAsync(id);
+            if (originalThread == null)
+            {
+                return NotFound();
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userIsAdminOrModerator = User.IsInRole("Admin") || User.IsInRole("Moderator");
+            if (originalThread.UserId != userId && !userIsAdminOrModerator)
+            {
+                return Forbid();
+            }
+
+            originalThread.Title = thread.Title;
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(thread);
+                    _context.Update(originalThread);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -106,10 +138,11 @@ namespace ITstudyv4.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(ManageThread));
+                return RedirectToAction(nameof(ShowAllThreads), new { categoryId = originalThread.CategoryId });
             }
             return View(thread);
         }
+
 
         public async Task<IActionResult> ManageThread()
         {
@@ -160,6 +193,14 @@ namespace ITstudyv4.Controllers
             {
                 return NotFound();
             }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userIsAdminOrModerator = User.IsInRole("Admin") || User.IsInRole("Moderator");
+            if (thread.UserId != userId && !userIsAdminOrModerator)
+            {
+                return Forbid();
+            }
+
             return View(thread);
         }
 
@@ -172,10 +213,19 @@ namespace ITstudyv4.Controllers
             {
                 return NotFound();
             }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userIsAdminOrModerator = User.IsInRole("Admin") || User.IsInRole("Moderator");
+            if (thread.UserId != userId && !userIsAdminOrModerator)
+            {
+                return Forbid();
+            }
+
             _context.Threads.Remove(thread);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(ManageThread));
+            return RedirectToAction(nameof(ShowAllThreads), new { categoryId = thread.CategoryId });
         }
+
 
     }
 }

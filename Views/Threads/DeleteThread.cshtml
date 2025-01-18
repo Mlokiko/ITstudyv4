@@ -1,0 +1,11 @@
+﻿@model Threads
+
+<h2>Potwierdź usunięcie tematu</h2>
+
+<p>Czy na pewno chcesz usunąć temat: <strong>@Model.Title</strong>?</p>
+
+<form asp-action="DeleteThread" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Usuń</button>
+    <a asp-action="ShowAllThreads" asp-route-categoryId="@Model.CategoryId" class="btn btn-secondary">Anuluj</a>
+</form>
