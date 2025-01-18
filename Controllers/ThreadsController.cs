@@ -1,5 +1,6 @@
 ﻿using ITstudyv4.Data;
 using ITstudyv4.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
@@ -37,6 +38,15 @@ namespace ITstudyv4.Controllers
         {
             ViewBag.CategoryId = categoryId;
             return View();
+        }
+
+        public async Task<IActionResult> ShowAllThreads()
+        {
+            var threads = await _context.Threads
+                .Include(t => t.User)
+                .ToListAsync();
+
+            return View(threads);
         }
 
 
