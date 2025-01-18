@@ -2,9 +2,9 @@
 
 namespace ITstudyv4.Models
 {
+    // Redundantnie Required jest tutaj i w dbcontext, ale dzieki temu tutaj wywali błędy userowi przy wprowadzaniu danych
     public class Categories
     {
-        // Redundantnie Required jest tutaj i w dbcontext, ale dzieki temu tutaj wywali błędy userowi przy wprowadzaniu danych
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Nazwa jest wymagana")]

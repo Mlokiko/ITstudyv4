@@ -11,5 +11,7 @@
 
         public bool HasPreviousPage => CurrentPage > 1;
         public bool HasNextPage => CurrentPage < TotalPages;
+
+        public int extra { get; set; }
     }
 }

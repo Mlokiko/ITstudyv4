@@ -21,27 +21,7 @@ namespace ITstudyv4.Controllers
             _context = context;
         }
 
-        //public async Task<IActionResult> ShowAllUsersss()
-        //{
-        //    var users = _userManager.Users.ToList();
-        //    var userRolesVM = new List<UserWithRolesVM>();
-
-        //    foreach (var user in users)
-        //    {
-        //        var role = await _userManager.GetRolesAsync(user);
-        //        userRolesVM.Add(new UserWithRolesVM
-        //        {
-        //            UserId = user.Id,
-        //            UserName = user.UserName,
-        //            Email = user.Email,
-        //            ProfilePictureURL = user.ProfilePictureURL,
-        //            JoinDate = user.JoinDate.ToString("dd/MM/yyyy"),
-        //            Role = string.Join(", ", role)
-        //        });
-        //    }
-        //    return View(userRolesVM);
-        //}
-
+        [Authorize(Roles = "Admin, Moderator")]
         public async Task<IActionResult> ShowAllUsers(int pageNumber = 1, int pageSize = 10)
         {
             var usersQuery = _userManager.Users.OrderBy(u => u.UserName);
@@ -77,6 +57,8 @@ namespace ITstudyv4.Controllers
 
             return View(viewModel);
         }
+
+        [Authorize(Roles = "Admin, Moderator")]
         public async Task<IActionResult> EditUser(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
@@ -101,10 +83,11 @@ namespace ITstudyv4.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin, Moderator")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditUser(EditUserVM model)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || model.UserId == null)
             {
                 ViewBag.AllRoles = _roleManager.Roles.Select(r => r.Name).ToList();
                 return View(model);
@@ -133,7 +116,6 @@ namespace ITstudyv4.Controllers
                 return View(model);
             }
 
-            // Update roles
             var currentRoles = await _userManager.GetRolesAsync(user);
             var rolesToAdd = model.Roles.Except(currentRoles).ToList();
             var rolesToRemove = currentRoles.Except(model.Roles).ToList();
@@ -151,6 +133,8 @@ namespace ITstudyv4.Controllers
             TempData["Message"] = "Użytkownik zaktualizowany.";
             return RedirectToAction("ShowAllUsers");
         }
+
+        [Authorize(Roles = "Admin, Moderator")]
         public async Task<IActionResult> DeleteUser(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
@@ -160,7 +144,9 @@ namespace ITstudyv4.Controllers
             }
             return View(user);
         }
+
         [HttpPost]
+        [Authorize(Roles = "Admin, Moderator")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteUserConfirmed(string id)
         {

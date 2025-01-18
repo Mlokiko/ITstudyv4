@@ -21,7 +21,7 @@ namespace ITstudyv4.Controllers
             this.userManager = userManager;
         }
 
-        public async Task<IActionResult> ShowThreadsInCategory(int categoryId)
+        public async Task<IActionResult> ShowThreadsInCategoryy(int categoryId)
         {
             var threads = await _context.Threads
                 .Where(t => t.CategoryId == categoryId)
@@ -32,6 +32,35 @@ namespace ITstudyv4.Controllers
             ViewBag.CategoryName = (await _context.Categories.FindAsync(categoryId))?.Name;
 
             return View(threads);
+        }
+
+
+        public async Task<IActionResult> ShowThreadsInCategory(int categoryId, int pageNumber = 1, int pageSize = 10)
+        {
+            var query = _context.Threads
+                .Where(t => t.CategoryId == categoryId);
+
+            var totalThreads = await query.CountAsync();
+
+            var threads = await query
+                
+                .Include(t => t.User)
+                .OrderBy(t => t.Id)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            var viewModel = new PaginatedListVM<Threads>
+            {
+                Items = threads,
+                TotalItems = totalThreads,
+                CurrentPage = pageNumber,
+                PageSize = pageSize,
+            };
+
+            ViewBag.CategoryName = (await _context.Categories.FindAsync(categoryId))?.Name;
+            ViewBag.CategoryId = categoryId;
+            return View(viewModel);
         }
 
 

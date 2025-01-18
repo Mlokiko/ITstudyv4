@@ -1,4 +1,6 @@
-﻿@model IEnumerable<Threads>
+﻿@using System.Security.Claims
+@using ITstudyv4.ViewModels
+@model PaginatedListVM<Threads>
 
 @{
     ViewData["Title"] = "Wątki";
@@ -17,7 +19,7 @@
     </thead>
     <tbody>
         <a asp-action="AddNewThread" asp-route-categoryId="@ViewBag.CategoryId" class="btn btn-primary">Dodaj nowy temat</a>
-        @foreach (var thread in Model)
+        @foreach (var thread in Model.Items)
         {
             <tr>
                 <td>
@@ -28,7 +30,118 @@
                 <td>@thread.User?.UserName</td>
                 <td>@thread.Views</td>
                 <td>@thread.CreatedAt.ToShortDateString()</td>
+
+                @if (thread.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier) || User.IsInRole("Admin") || User.IsInRole("Moderator"))
+                {
+                    <td><a asp-controller="Threads" asp-action="EditThread" asp-route-id="@thread.Id">Edytuj temat</a></td>
+                    <td><a asp-controller="Threads" asp-action="DeleteThread" asp-route-id="@thread.Id">Usuń temat</a></td>
+                }
             </tr>
         }
+
     </tbody>
 </table>
+
+<div class="pagination">
+    @if (Model.HasPreviousPage)
+    {
+        <a href="@Url.Action("ShowThreadsInCategory", new { categoryId = ViewBag.CategoryId, pageNumber = Model.CurrentPage - 1, pageSize = Model.PageSize })" class="btn btn-primary m-1">Poprzednia</a>
+    }
+    <span>Strona @Model.CurrentPage z @Model.TotalPages</span>
+    @if (Model.HasNextPage)
+    {
+        <a href="@Url.Action("ShowThreadsInCategory", new {  categoryId = ViewBag.CategoryId, pageNumber = Model.CurrentPage + 1, pageSize = Model.PageSize })" class="btn btn-primary m-1">Następna</a>
+    }
+</div>
+
+
+
+
+@* @using System.Security.Claims *@
+@* @model IEnumerable<Threads> *@
+
+@* @{ *@
+@*     ViewData["Title"] = "Wątki"; *@
+@* } *@
+
+@* <h1>@ViewBag.CategoryName</h1> *@
+
+@* <table class="table"> *@
+@*     <thead> *@
+@*         <tr> *@
+@*             <th>Tytuł</th> *@
+@*             <th>Użytkownik</th> *@
+@*             <th>Wyświetlenia</th> *@
+@*             <th>Data utworzenia</th> *@
+@*         </tr> *@
+@*     </thead> *@
+@*     <tbody> *@
+@*         <a asp-action="AddNewThread" asp-route-categoryId="@ViewBag.CategoryId" class="btn btn-primary">Dodaj nowy temat</a> *@
+@*         @foreach (var thread in Model) *@
+@*         { *@
+@*             <tr> *@
+@*                 <td> *@
+@*                     <a asp-controller="Posts" asp-action="ShowAllPosts" asp-route-threadId="@thread.Id"> *@
+@*                         @thread.Title *@
+@*                     </a> *@
+@*                 </td> *@
+@*                 <td>@thread.User?.UserName</td> *@
+@*                 <td>@thread.Views</td> *@
+@*                 <td>@thread.CreatedAt.ToShortDateString()</td> *@
+
+@*                 @if (thread.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier) || User.IsInRole("Admin") || User.IsInRole("Moderator")) *@
+@*                 { *@
+@*                     <td><a asp-controller="Threads" asp-action="EditThread" asp-route-id="@thread.Id">Edytuj temat</a></td> *@
+@*                     <td><a asp-controller="Threads" asp-action="DeleteThread" asp-route-id="@thread.Id">Usuń temat</a></td> *@
+@*                 } *@
+@*             </tr> *@
+@*         } *@
+
+@*     </tbody> *@
+@* </table> *@
+
+
+
+
+
+
+
+
+
+
+
+
+@* @model IEnumerable<Threads> *@
+
+@* @{ *@
+@*     ViewData["Title"] = "Wątki"; *@
+@* } *@
+
+@* <h1>@ViewBag.CategoryName</h1> *@
+
+@* <table class="table"> *@
+@*     <thead> *@
+@*         <tr> *@
+@*             <th>Tytuł</th> *@
+@*             <th>Użytkownik</th> *@
+@*             <th>Wyświetlenia</th> *@
+@*             <th>Data utworzenia</th> *@
+@*         </tr> *@
+@*     </thead> *@
+@*     <tbody> *@
+@*         <a asp-action="AddNewThread" asp-route-categoryId="@ViewBag.CategoryId" class="btn btn-primary">Dodaj nowy temat</a> *@
+@*         @foreach (var thread in Model) *@
+@*         { *@
+@*             <tr> *@
+@*                 <td> *@
+@*                     <a asp-controller="Posts" asp-action="ShowAllPosts" asp-route-threadId="@thread.Id"> *@
+@*                         @thread.Title *@
+@*                     </a> *@
+@*                 </td> *@
+@*                 <td>@thread.User?.UserName</td> *@
+@*                 <td>@thread.Views</td> *@
+@*                 <td>@thread.CreatedAt.ToShortDateString()</td> *@
+@*             </tr> *@
+@*         } *@
+@*     </tbody> *@
+@* </table> *@

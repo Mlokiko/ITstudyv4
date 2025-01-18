@@ -6,6 +6,7 @@ using System.Threading;
 
 namespace ITstudyv4.Data
 {
+    // Dodawałem dane (nie licząc SeedUsersAndRoles) wraz z Id, po zmianie na async musiał wystąpić problem... baza tego nie ogarnia i przy ręcznym dodawaniu zaczyna iterować od 1, dlatego teraz jest bez określania Id
     public static class SeedData
     {
 
@@ -184,11 +185,11 @@ namespace ITstudyv4.Data
             if (await context.Categories.AnyAsync())
                 return;
 
-            context.Categories.AddRange(
-                new Categories { Id = 1, Name = "Programowanie", Description = "Wszystko o programowaniu" },
-                new Categories { Id = 2, Name = "Hardware", Description = "Wszystko  o sprzęcie komputerowym - od smartfonów po przełączniki" },
-                new Categories { Id = 3, Name = "OS", Description = "Wszystko związane z systemami operacyjnymi" },
-                new Categories { Id = 4, Name = "OFFTOPIC", Description = "Wszystkie tematy niezwiązane z Informatyką" }
+            await context.Categories.AddRangeAsync(
+                new Categories { Name = "Programowanie", Description = "Wszystko o programowaniu" },
+                new Categories { Name = "Hardware", Description = "Wszystko  o sprzęcie komputerowym - od smartfonów po przełączniki" },
+                new Categories { Name = "OS", Description = "Wszystko związane z systemami operacyjnymi" },
+                new Categories { Name = "OFFTOPIC", Description = "Wszystkie tematy niezwiązane z Informatyką" }
             );
             await context.SaveChangesAsync();
         }
@@ -212,27 +213,27 @@ namespace ITstudyv4.Data
 
             await context.Threads.AddRangeAsync(
                 // Programowanie
-                new Threads { Id = 1, Title = "C# - ASP.NET core MVC - jak stworzyć projekt?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = mod.Id, CategoryId = 1 }, // AnswersId = 1
-                new Threads { Id = 5, Title = "Haskell - co to?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = kacper.Id, CategoryId = 1 },
-                new Threads { Id = 2, Title = "C++ - Jak zrobić kalkulator?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = user.Id, CategoryId = 1 },
-                new Threads { Id = 3, Title = "C# - Co to MAUI?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = user.Id, CategoryId = 1 },
-                new Threads { Id = 4, Title = "F# - czy jest sens korzystać z tego w 2025?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = adek.Id, CategoryId = 1 },
+                new Threads { Title = "C# - ASP.NET core MVC - jak stworzyć projekt?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = mod.Id, CategoryId = 1 }, // AnswersId = 1
+                new Threads { Title = "Haskell - co to?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = kacper.Id, CategoryId = 1 },
+                new Threads { Title = "C++ - Jak zrobić kalkulator?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = user.Id, CategoryId = 1 },
+                new Threads { Title = "C# - Co to MAUI?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = user.Id, CategoryId = 1 },
+                new Threads { Title = "F# - czy jest sens korzystać z tego w 2025?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = adek.Id, CategoryId = 1 },
                 // Hardware
-                new Threads { Id = 6, Title = "Czy procesory intela 14 gen naprawdę są wadliwe?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = baran.Id, CategoryId = 2 },
-                new Threads { Id = 7, Title = "Jaki laptop na studia?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = kacper.Id, CategoryId = 2 },
-                new Threads { Id = 8, Title = "Jaki procesor do programowania?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = adek.Id, CategoryId = 2 },
-                new Threads { Id = 9, Title = "Lepiej wybrać rx6600 czy rtx 3050?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = baran.Id, CategoryId = 2 },
-                new Threads { Id = 10, Title = "Mój komputer się nie uruchamia - potrzebuje pomocy na teraz!!!", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = mod.Id, CategoryId = 2 },
+                new Threads { Title = "Czy procesory intela 14 gen naprawdę są wadliwe?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = baran.Id, CategoryId = 2 },
+                new Threads { Title = "Jaki laptop na studia?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = kacper.Id, CategoryId = 2 },
+                new Threads { Title = "Jaki procesor do programowania?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = adek.Id, CategoryId = 2 },
+                new Threads { Title = "Lepiej wybrać rx6600 czy rtx 3050?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = baran.Id, CategoryId = 2 },
+                new Threads { Title = "Mój komputer się nie uruchamia - potrzebuje pomocy na teraz!!!", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = mod.Id, CategoryId = 2 },
                 // OS
-                new Threads { Id = 11, Title = "Windows - Visual studio się wywala", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = adek.Id, CategoryId = 3 },
-                new Threads { Id = 12, Title = "Linux - jaki polecacie?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = adek.Id, CategoryId = 3 },
-                new Threads { Id = 13, Title = "Windows - pożera 50% procka cały czas - co zrobić?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = kacper.Id, CategoryId = 3 },
-                new Threads { Id = 14, Title = "Mac OS - jak zacząć zabawe z chocolate?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = baran.Id, CategoryId = 3 },
+                new Threads { Title = "Windows - Visual studio się wywala", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = adek.Id, CategoryId = 3 },
+                new Threads { Title = "Linux - jaki polecacie?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = adek.Id, CategoryId = 3 },
+                new Threads { Title = "Windows - pożera 50% procka cały czas - co zrobić?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = kacper.Id, CategoryId = 3 },
+                new Threads { Title = "Mac OS - jak zacząć zabawe z chocolate?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = baran.Id, CategoryId = 3 },
                 // OFTOPIC
-                new Threads { Id = 15, Title = "Podzielcie się swoimi obrazkami kotów", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = adek.Id, CategoryId = 4 },
-                new Threads { Id = 16, Title = "Jaki samochód dla programisty?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = user.Id, CategoryId = 4 },
-                new Threads { Id = 17, Title = "Czemu seedowanie danych jest takie żmudne?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = adek.Id, CategoryId = 4 },
-                new Threads { Id = 18, Title = "Patrzcie jaki fajny link!", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = mod.Id, CategoryId = 4 }
+                new Threads { Title = "Podzielcie się swoimi obrazkami kotów", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = adek.Id, CategoryId = 4 },
+                new Threads { Title = "Jaki samochód dla programisty?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = user.Id, CategoryId = 4 },
+                new Threads { Title = "Czemu seedowanie danych jest takie żmudne?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = adek.Id, CategoryId = 4 },
+                new Threads { Title = "Patrzcie jaki fajny link!", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = mod.Id, CategoryId = 4 }
             );
             await context.SaveChangesAsync();
         }
@@ -256,16 +257,16 @@ namespace ITstudyv4.Data
             context.Posts.AddRange(
                 // Proramowanie
                     // Post 1
-                new Posts { Id = 1, Content = "klikasz utwórz projekt i wybierasz ASP.NET core MVC, tyle", CreatedDate = DateTime.UtcNow, Edited = false, UserId = admin.Id, ThreadId = 1},
-                new Posts { Id = 2, Content = "Ale gdzie mam to kliknąć?", CreatedDate = DateTime.UtcNow, Edited = false, UserId = baran.Id, ThreadId = 1 },
-                new Posts { Id = 3, Content = "W Visualu", CreatedDate = DateTime.UtcNow, Edited = false, UserId = admin.Id, ThreadId = 1 },
-                new Posts { Id = 4, Content = "A co to visual?", CreatedDate = DateTime.UtcNow, Edited = false, UserId = baran.Id, ThreadId = 1 },
-                new Posts { Id = 5, Content = "Serio?", CreatedDate = DateTime.UtcNow, Edited = false, UserId = kacper.Id, ThreadId = 1 },
-                new Posts { Id = 6, Content = "XD", CreatedDate = DateTime.UtcNow, Edited = false, UserId = adek.Id, ThreadId = 1 },
-                new Posts { Id = 7, Content = "Zamykam temat, powód: ... nie trzeba podawać", CreatedDate = DateTime.UtcNow, Edited = false, UserId = mod.Id, ThreadId = 1 },
+                new Posts { Content = "klikasz utwórz projekt i wybierasz ASP.NET core MVC, tyle", CreatedDate = DateTime.UtcNow, Edited = false, UserId = admin.Id, ThreadId = 1},
+                new Posts { Content = "Ale gdzie mam to kliknąć?", CreatedDate = DateTime.UtcNow, Edited = false, UserId = baran.Id, ThreadId = 1 },
+                new Posts { Content = "W Visualu", CreatedDate = DateTime.UtcNow, Edited = false, UserId = admin.Id, ThreadId = 1 },
+                new Posts { Content = "A co to visual?", CreatedDate = DateTime.UtcNow, Edited = false, UserId = baran.Id, ThreadId = 1 },
+                new Posts { Content = "Serio?", CreatedDate = DateTime.UtcNow, Edited = false, UserId = kacper.Id, ThreadId = 1 },
+                new Posts { Content = "XD", CreatedDate = DateTime.UtcNow, Edited = false, UserId = adek.Id, ThreadId = 1 },
+                new Posts { Content = "Zamykam temat, powód: ... nie trzeba podawać", CreatedDate = DateTime.UtcNow, Edited = false, UserId = mod.Id, ThreadId = 1 },
 
-                new Posts { Id = 8, Content = "wpisujesz w ChatGPT co chcesz i dostajesz gotowe rozwiązanie", CreatedDate = DateTime.UtcNow, Edited = false, UserId = adek.Id, ThreadId = 2 },
-                new Posts { Id = 9, Content = "Zamykam temat - nie rozmawiamy tutaj o czarnej magii", CreatedDate = DateTime.UtcNow, Edited = false, UserId = mod.Id, ThreadId = 3 }
+                new Posts { Content = "wpisujesz w ChatGPT co chcesz i dostajesz gotowe rozwiązanie", CreatedDate = DateTime.UtcNow, Edited = false, UserId = adek.Id, ThreadId = 2 },
+                new Posts { Content = "Zamykam temat - nie rozmawiamy tutaj o czarnej magii", CreatedDate = DateTime.UtcNow, Edited = false, UserId = mod.Id, ThreadId = 3 }
             );
             //await context.SaveChangesAsync();
             context.SaveChanges();

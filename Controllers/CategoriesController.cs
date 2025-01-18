@@ -1,6 +1,7 @@
 ﻿using ITstudyv4.Data;
 using ITstudyv4.Models;
 using ITstudyv4.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -17,11 +18,6 @@ namespace ITstudyv4.Controllers
             _context = context;
         }
 
-        //public IActionResult ShowAllCategories()
-        //{
-        //    var categories = _context.Categories.ToList();
-        //    return View(categories);
-        //}
         public async Task<IActionResult> ShowAllCategories(int pageNumber = 1, int pageSize = 10)
         {
             var query = _context.Categories.OrderBy(i => i.Id);
@@ -43,12 +39,14 @@ namespace ITstudyv4.Controllers
             return View(viewModel);
         }
 
+        [Authorize(Roles = "Admin, Moderator")]
         public IActionResult AddNewCategory()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin, Moderator")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddNewCategory([Bind("Name,Description")] Categories category)
         {
@@ -56,12 +54,14 @@ namespace ITstudyv4.Controllers
             {
                 _context.Add(category);
                 await _context.SaveChangesAsync();
+                TempData["Message"] = "Dodano nową kategorię.";
                 return RedirectToAction(nameof(ManageCategory));
             }
 
             return View(category);
         }
 
+        [Authorize(Roles = "Admin, Moderator")]
         public async Task<IActionResult> EditCategory(int? id)
         {
             if (id == null)
@@ -78,6 +78,7 @@ namespace ITstudyv4.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin, Moderator")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditCategory(int id, [Bind("Id,Name,Description")] Categories category)
         {
@@ -104,11 +105,13 @@ namespace ITstudyv4.Controllers
                         throw;
                     }
                 }
+                TempData["Message"] = "Pomyślnie zaktualizowano kategorię.";
                 return RedirectToAction(nameof(ManageCategory));
             }
             return View(category);
         }
 
+        [Authorize(Roles = "Admin, Moderator")]
         public async Task<IActionResult> ManageCategory()
         {
             var categories = await _context.Categories.ToListAsync();
@@ -116,6 +119,7 @@ namespace ITstudyv4.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin, Moderator")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ManageCategory(int id, [Bind("id,Name,Description")] Categories category)
         {
@@ -147,6 +151,7 @@ namespace ITstudyv4.Controllers
             return View(category);
         }
 
+        [Authorize(Roles = "Admin, Moderator")]
         public async Task<IActionResult> DeleteCategory(int? id)
         {
             if (id == null)
@@ -163,6 +168,7 @@ namespace ITstudyv4.Controllers
         }
 
         [HttpPost, ActionName("DeleteCategory")]
+        [Authorize(Roles = "Admin, Moderator")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -173,6 +179,7 @@ namespace ITstudyv4.Controllers
             }
             _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
+            TempData["Message"] = "Pomyślnie usunięto kategorię.";
             return RedirectToAction(nameof(ManageCategory));
         }
     }
