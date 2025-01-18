@@ -11,13 +11,15 @@ namespace ITstudyv4.Controllers
     public class ThreadsController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<ForumUser> userManager;
 
-        public ThreadsController(AppDbContext context)
+        public ThreadsController(AppDbContext context, UserManager<ForumUser> userManager)
         {
             _context = context;
+            this.userManager = userManager;
         }
 
-        public async Task<IActionResult> ShowAllThreads(int categoryId)
+        public async Task<IActionResult> ShowThreadsInCategory(int categoryId)
         {
             var threads = await _context.Threads
                 .Where(t => t.CategoryId == categoryId)
@@ -96,6 +98,8 @@ namespace ITstudyv4.Controllers
             return View(thread);
         }
 
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditThread(int id, [Bind("Id,Title")] Threads thread)
@@ -142,7 +146,6 @@ namespace ITstudyv4.Controllers
             }
             return View(thread);
         }
-
 
         public async Task<IActionResult> ManageThread()
         {

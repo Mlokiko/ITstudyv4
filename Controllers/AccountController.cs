@@ -182,7 +182,7 @@ namespace ITstudyv4.Controllers
             var result = await userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
             if (result.Succeeded)
             {
-                TempData["Message"] = "Password changed successfully.";
+                TempData["Message"] = "Hasło zmieniono pomyślnie.";
                 return RedirectToAction("ManageAccount");
             }
 

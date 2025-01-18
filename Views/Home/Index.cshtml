@@ -3,58 +3,58 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Witaj</h1>
+    <h1 class="display-4">Witaj na ITstudy</h1>
 </div>
-    <p>To potem pozmieniamy, aktualnie umieszczam tutaj wszystkie dostępne linki/podstrony jakie będziemy potrzebować.</p><br />
+ 
 
+<h1>Wszystkie Kategorie</h1>
+<table class="table table-striped table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>Nazwa</th>
+            <th>Opis</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var category in (IEnumerable<Categories>)ViewBag.AllCategories)
+        {
+            <tr>
+                <td>
+                    <a asp-controller="Threads" asp-action="ShowThreadsInCategory" asp-route-categoryId="@category.Id">
+                        @category.Name
+                    </a>
+                </td>
+                <td>@category.Description</td>
+            </tr>
+        }
+    </tbody>
+</table>
 
+<h1>Wszystkie Tematy</h1>
 
-<h2>Podstrony do stworzenia:</h2><br />
-<h3>Dostęp dla każdego (odwiedzający/niezalogowani)</h3>
-    <ul>
-        <li>Strona główna (na niej wstępnie ostatnie tematy powinny się wyświetlać</li>
-        <li>Wszystkie posty</li>
-    <li class="nav-item">
-        <a class="nav-link text-info" asp-area="" asp-controller="Threads" asp-action="ShowAllThreads">Wszystkie Tematy</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-info" asp-area="" asp-controller="Categories" asp-action="ShowAllCategories">Wszystkie Kategorie</a>
-    </li>
-        <li>Regulamin</li>
-        <li>Kontakt</li>
-    </ul>
+<table class="table table-striped table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>Tytuł</th>
+            <th>Użytkownik</th>
+            <th>Wyświetlenia</th>
+            <th>Data utworzenia</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var thread in (IEnumerable<Threads>)ViewBag.AllThreads)
+        {
+            <tr>
+                <td>
+                    <a asp-controller="Posts" asp-action="ShowAllPosts" asp-route-threadId="@thread.Id">
+                        @thread.Title
+                    </a>
+                </td>
+                <td>@thread.User?.UserName</td>
+                <td>@thread.Views</td>
+                <td>@thread.CreatedAt.ToShortDateString()</td>
+            </tr>
+        }
+    </tbody>
+</table>
 
-<h3>Dostęp dla Normalnego usera</h3>
-    <ul>
-        <li>Tematy bez odpowiedzi</li>
-        <li>NAPOTEM odpisz/napisz post</li>
-    </ul>
-
-<h3>Dostęp tylko dla Moderatora (i Admina):</h3>
-    <ul>
-        <li>Zbanuj Użytkownika?</li>
-        <li>Ukryj/usuń temat?</li>
-        <li>Ukryj/usuń post?</li>
-    </ul>
-
-<h3>Dostępne tylko dla admina:</h3>
-    <ul>
-    <li class="nav-item">
-        <a class="nav-link text-info" asp-area="" asp-controller="Threads" asp-action="AddNewThread">Stwórz Temat</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-info" asp-area="" asp-controller="Threads" asp-action="ManageThreads">Zarządzaj Tematami</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-info" asp-area="" asp-controller="Categories" asp-action="AddNewCategory">Stwórz kategorię</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-info" asp-area="" asp-controller="Categories" asp-action="ManageCategory">Zarządzaj kategoriami</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-info" asp-area="" asp-controller="Admin" asp-action="ShowAllUsers">Pokaż wszystkich użytkowników</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-info" asp-area="" asp-controller="Admin" asp-action="EditUser">Zarządzaj użytkownikiem (zmień rolę, usuń itd)</a>
-    </li>
-    </ul>
