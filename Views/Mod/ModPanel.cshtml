@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Moderacja";
+}
+
+<div class="row d-flex align-items-center justify-content-center">
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Message"]
+        </div>
+    }
+    <div class="col-md-3 card p-3">
+        <h2 class="text-center text-info">Moderacja ITstudy</h2>
+        <a href="@Url.Action("AddNewCategory", "Categories")" class="btn btn-warning m-1">Stwórz kategorię</a>
+        <a href="@Url.Action("ManageCategory", "Categories")" class="btn btn-warning m-1">Zarządzaj kategoriami</a>
+        <a href="@Url.Action("ShowAllUsers", "Admin")" class="btn btn-warning m-1">Pokaż wszystkich użytkowników</a>
+    </div>
+</div>

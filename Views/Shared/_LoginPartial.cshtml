@@ -15,6 +15,10 @@
             }
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                @if (User.IsInRole("Admin") ^ User.IsInRole("Moderator"))
+                {
+                    <a class="dropdown-item" asp-controller="Mod" asp-action="ModPanel">Moderacja ITstudy</a>
+                }
                 <li>
                     <a class="dropdown-item" asp-controller="Account" asp-action="ManageAccount">Ustawienia konta</a>
                 </li>
