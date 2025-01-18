@@ -13,7 +13,7 @@ namespace ITstudyv4.Models
         public int Views { get; set; }
         public string? UserId { get; set; }
         public int CategoryId { get; set; }
-        public int AnswersId { get; set; }
+        public int? AnswersId { get; set; }
 
         // W .sql mamy zapisane żeby się kaskadowo usuwało, będzie to trzeba sprawdzić czy prawidłowo się usuwa, nie robiliśmy tego na zajęciach
 
