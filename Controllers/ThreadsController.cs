@@ -38,8 +38,6 @@ namespace ITstudyv4.Controllers
                 .Include(t => t.User)
                 .ToListAsync();
 
-            ViewBag.CategoryName = (await _context.Categories.FindAsync())?.Name;
-
             return View(threads);
         }
 
@@ -66,6 +64,11 @@ namespace ITstudyv4.Controllers
             if (ModelState.IsValid)
             {
                 var user = await userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Ty pewien jesteś że ty to ty?.");
+                    return View(thread);
+                }
                 thread.CategoryId = categoryId;
                 thread.UserId = user.Id;
                 _context.Add(thread);
