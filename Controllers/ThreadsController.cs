@@ -1,5 +1,6 @@
 ﻿using ITstudyv4.Data;
 using ITstudyv4.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -10,13 +11,15 @@ namespace ITstudyv4.Controllers
     public class ThreadsController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<ForumUser> userManager;
 
-        public ThreadsController(AppDbContext context)
+        public ThreadsController(AppDbContext context, UserManager<ForumUser> userManager)
         {
             _context = context;
+            this.userManager = userManager;
         }
 
-        public async Task<IActionResult> ShowAllThreads(int categoryId)
+        public async Task<IActionResult> ShowThreadsInCategory(int categoryId)
         {
             var threads = await _context.Threads
                 .Where(t => t.CategoryId == categoryId)
@@ -25,6 +28,17 @@ namespace ITstudyv4.Controllers
 
             ViewBag.CategoryId = categoryId;
             ViewBag.CategoryName = (await _context.Categories.FindAsync(categoryId))?.Name;
+
+            return View(threads);
+        }
+
+        public async Task<IActionResult> ShowAllThreads()
+        {
+            var threads = await _context.Threads
+                .Include(t => t.User)
+                .ToListAsync();
+
+            ViewBag.CategoryName = (await _context.Categories.FindAsync())?.Name;
 
             return View(threads);
         }
@@ -42,20 +56,21 @@ namespace ITstudyv4.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddNewThread(int categoryId, [Bind("Title")] Threads thread)
         {
-            // Ensure category exists
             var category = await _context.Categories.FindAsync(categoryId);
             if (category == null)
             {
-                ModelState.AddModelError(string.Empty, "The specified category does not exist.");
+                ModelState.AddModelError(string.Empty, "Wybrana kategoria nie istnieje.");
                 return View(thread);
             }
 
             if (ModelState.IsValid)
             {
+                var user = await userManager.GetUserAsync(User);
                 thread.CategoryId = categoryId;
+                thread.UserId = user.Id;
                 _context.Add(thread);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(ShowAllThreads), new { categoryId });
+                return RedirectToAction(nameof(ShowThreadsInCategory), new { categoryId });
             }
 
             ViewBag.CategoryId = categoryId;
