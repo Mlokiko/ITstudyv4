@@ -5,9 +5,41 @@
     ViewData["Title"] = "Posty";
 }
 
-<h1>@ViewBag.ThreadTitle</h1>
+<div id="title-card">
+    <h1>@ViewBag.ThreadTitle</h1>
+    <p>Przez @ViewBag.UserName, @ViewBag.CreatedDate w @ViewBag.CategoryName</p>
+</div>
 
-<table class="table">
+<span class="add-btn">
+    <a asp-action="AddNewPost" asp-route-threadId="@ViewBag.ThreadId" class="btn btn-primary">Dodaj nowy post</a>
+</span>
+
+<div class="posts-container">
+    @foreach (var post in Model)
+    {
+        <div class="post-container">
+            <div class="user-info">
+                <p>@post.User?.UserName</p>
+                <img src="@post.User?.ProfilePictureURL" alt="Zdjęcie profilowe" class="img-thumbnail align-items-center rounded-circle" style="max-width: 50px;" />
+            </div>
+            <div class="post-content">
+                <div class="post-info">
+                    <span>Opublikowano @post.CreatedDate</span>
+                    @if (post.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier) || User.IsInRole("Admin") || User.IsInRole("Moderator"))
+                    {
+                        <a class="post-btn" asp-controller="Posts" asp-action="EditPost" asp-route-id="@post.Id">Edytuj post</a>
+                        <a class="post-btn" asp-controller="Posts" asp-action="DeletePost" asp-route-id="@post.Id">Usuń post</a>
+                    }
+                </div>
+                <div class="post-text">
+                    <p>@post.Content</p>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@* <table class="table">
     <thead>
         <tr>
             <th>Treść</th>
@@ -34,4 +66,4 @@
             </tr>
         }
     </tbody>
-</table>
+</table> *@

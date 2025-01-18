@@ -19,7 +19,11 @@ namespace ITstudyv4.Controllers
 
         public async Task<IActionResult> ShowAllPosts(int threadId)
         {
-            var thread = await _context.Threads.FindAsync(threadId);
+            var thread = await _context.Threads
+                .Include(t => t.User)
+                .Include(t => t.Category)
+                .FirstOrDefaultAsync(t => t.Id == threadId);
+
             if (thread == null)
             {
                 return NotFound();
@@ -35,6 +39,9 @@ namespace ITstudyv4.Controllers
 
             ViewBag.ThreadId = threadId;
             ViewBag.ThreadTitle = (await _context.Threads.FindAsync(threadId))?.Title;
+            ViewBag.UserName = thread.User?.UserName ?? "Nieznany użytkownik";
+            ViewBag.CreatedDate = thread.CreatedAt.ToString("dd MMMM yyyy");
+            ViewBag.CategoryName = thread.Category?.Name ?? "Brak kategorii";
             return View(posts);
         }
 
