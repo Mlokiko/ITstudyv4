@@ -15,7 +15,9 @@
         <h2 class="text-center text-info">Ustawienia konta</h2>
         <div class="form-group text-center">
             @if (!string.IsNullOrEmpty(Model.ProfilePictureURL))
-            {<img src="@Model.ProfilePictureURL" alt="Zdjęcie profilowe" class="img-thumbnail align-items-center rounded-circle" style="max-width: 150px;" />}
+            {
+                <img src="@Model.ProfilePictureURL" alt="Zdjęcie profilowe" class="img-thumbnail align-items-center rounded-circle" style="width: 150px; height: 150px; object-fit:cover;" />
+            }
             else{<p>Nie ustawiono zdjęcia profilowego.</p>}
         </div>
         <a href="@Url.Action("ChangeProfilePicture", "Account", new { id = Model.UserId })" class="btn btn-warning m-1">Zmień zdjęcie profilowe</a>
