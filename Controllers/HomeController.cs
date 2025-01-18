@@ -4,6 +4,7 @@ using ITstudyv4.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ITstudyv4.Controllers
 {
@@ -22,7 +23,7 @@ namespace ITstudyv4.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.AllThreads = _context.Threads.ToList();
+            ViewBag.AllThreads = _context.Threads.Include(t => t.User).ToList();
             ViewBag.AllCategories = _context.Categories.ToList();
             return View();
         }

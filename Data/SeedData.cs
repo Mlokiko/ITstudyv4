@@ -8,8 +8,10 @@ namespace ITstudyv4.Data
 {
     public static class SeedData
     {
+
         public static async Task SeedUsersAndRolesAsync(IServiceProvider serviceProvider)
         {
+            using var scope = serviceProvider.CreateScope();
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var userManager = serviceProvider.GetRequiredService<UserManager<ForumUser>>();
 
@@ -174,6 +176,7 @@ namespace ITstudyv4.Data
         }
         public static async Task SeedCategories(IServiceProvider serviceProvider)
         {
+            using var scope = serviceProvider.CreateScope();
             using var context = new AppDbContext(
             serviceProvider.GetRequiredService<DbContextOptions<AppDbContext>>());
 
@@ -191,11 +194,13 @@ namespace ITstudyv4.Data
         }
         public static async Task SeedThreads(IServiceProvider serviceProvider)
         {
-            using var context = new AppDbContext(
-            serviceProvider.GetRequiredService<DbContextOptions<AppDbContext>>());
-            var userManager = serviceProvider.GetRequiredService<UserManager<ForumUser>>();
+            using var scope = serviceProvider.CreateScope();
+            var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ForumUser>>();
 
-            if (context.Threads.Any())
+            Random rnd = new Random();
+
+            if (await context.Threads.AnyAsync())
                 return;
 
             var admin = await userManager.FindByEmailAsync("admin@example.com");
@@ -205,35 +210,94 @@ namespace ITstudyv4.Data
             var baran = await userManager.FindByEmailAsync("Blazej@wp.pl");
             var adek = await userManager.FindByEmailAsync("Adrian@xyz.com");
 
-            context.Threads.AddRange(
-                new Threads { Id = 1, Title = "C# - ASP.NET core MVC - jak stworzyć projekt?", CreatedAt = DateTime.UtcNow, Views = 45, UserId = mod.Id, CategoryId = 1 }, // AnswersId = 1
-                new Threads { Id = 2, Title = "C++ - Jak zrobić kalkulator?", CreatedAt = DateTime.UtcNow, Views = 200, UserId = user.Id, CategoryId = 1 },
-                new Threads { Id = 3, Title = "Haskell - co to?", CreatedAt = DateTime.UtcNow, Views = 5, UserId = kacper.Id, CategoryId = 2 }
+            await context.Threads.AddRangeAsync(
+                // Programowanie
+                new Threads { Id = 1, Title = "C# - ASP.NET core MVC - jak stworzyć projekt?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = mod.Id, CategoryId = 1 }, // AnswersId = 1
+                new Threads { Id = 5, Title = "Haskell - co to?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = kacper.Id, CategoryId = 1 },
+                new Threads { Id = 2, Title = "C++ - Jak zrobić kalkulator?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = user.Id, CategoryId = 1 },
+                new Threads { Id = 3, Title = "C# - Co to MAUI?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = user.Id, CategoryId = 1 },
+                new Threads { Id = 4, Title = "F# - czy jest sens korzystać z tego w 2025?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = adek.Id, CategoryId = 1 },
+                // Hardware
+                new Threads { Id = 6, Title = "Czy procesory intela 14 gen naprawdę są wadliwe?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = baran.Id, CategoryId = 2 },
+                new Threads { Id = 7, Title = "Jaki laptop na studia?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = kacper.Id, CategoryId = 2 },
+                new Threads { Id = 8, Title = "Jaki procesor do programowania?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = adek.Id, CategoryId = 2 },
+                new Threads { Id = 9, Title = "Lepiej wybrać rx6600 czy rtx 3050?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = baran.Id, CategoryId = 2 },
+                new Threads { Id = 10, Title = "Mój komputer się nie uruchamia - potrzebuje pomocy na teraz!!!", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = mod.Id, CategoryId = 2 },
+                // OS
+                new Threads { Id = 11, Title = "Windows - Visual studio się wywala", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = adek.Id, CategoryId = 3 },
+                new Threads { Id = 12, Title = "Linux - jaki polecacie?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = adek.Id, CategoryId = 3 },
+                new Threads { Id = 13, Title = "Windows - pożera 50% procka cały czas - co zrobić?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = kacper.Id, CategoryId = 3 },
+                new Threads { Id = 14, Title = "Mac OS - jak zacząć zabawe z chocolate?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = baran.Id, CategoryId = 3 },
+                // OFTOPIC
+                new Threads { Id = 15, Title = "Podzielcie się swoimi obrazkami kotów", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = adek.Id, CategoryId = 4 },
+                new Threads { Id = 16, Title = "Jaki samochód dla programisty?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = user.Id, CategoryId = 4 },
+                new Threads { Id = 17, Title = "Czemu seedowanie danych jest takie żmudne?", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = adek.Id, CategoryId = 4 },
+                new Threads { Id = 18, Title = "Patrzcie jaki fajny link!", CreatedAt = DateTime.UtcNow, Views = rnd.Next(0, 300), UserId = mod.Id, CategoryId = 4 }
             );
             await context.SaveChangesAsync();
         }
         public static async Task SeedPosts(IServiceProvider serviceProvider)
         {
-            using var context = new AppDbContext(
-            serviceProvider.GetRequiredService<DbContextOptions<AppDbContext>>());
-            var userManager2 = serviceProvider.GetRequiredService<UserManager<ForumUser>>();
+            using var scope = serviceProvider.CreateScope();
+            var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ForumUser>>();
 
-            if (context.Posts.Any())
+            if (await context.Posts.AnyAsync())
                 return;
 
-            var admin2 = await userManager2.FindByEmailAsync("admin@example.com");
-            var mod2 = await userManager2.FindByEmailAsync("moderator@example.com");
-            var user2 = await userManager2.FindByEmailAsync("uzytkownik@example.com");
-            var kacper2 = await userManager2.FindByEmailAsync("Kacper@google.com");
-            var baran2 = await userManager2.FindByEmailAsync("Blazej@wp.pl");
-            var adek2 = await userManager2.FindByEmailAsync("Adrian@xyz.com");
+            var admin = await userManager.FindByEmailAsync("admin@example.com");
+            var mod = await userManager.FindByEmailAsync("moderator@example.com");
+            var user = await userManager.FindByEmailAsync("uzytkownik@example.com");
+            var kacper = await userManager.FindByEmailAsync("Kacper@google.com");
+            var baran = await userManager.FindByEmailAsync("Blazej@wp.pl");
+            var adek = await userManager.FindByEmailAsync("Adrian@xyz.com");
 
+            //await context.Posts.AddRangeAsync(
             context.Posts.AddRange(
-                new Posts { Id = 1, Content = "klikasz utwórz projekt i wybierasz ASP.NET core MVC, tyle", CreatedDate = DateTime.UtcNow, Edited = false, UserId = admin2.Id, ThreadId = 1},
-                new Posts { Id = 2, Content = "wpisujesz w ChatGPT co chcesz i dostajesz gotowe rozwiązanie", CreatedDate = DateTime.UtcNow, Edited = false, UserId = mod2.Id, ThreadId = 2 },
-                new Posts { Id = 3, Content = "Zamykam temat - nie rozmawiamy tutaj o czarnej magii", CreatedDate = DateTime.UtcNow, Edited = false, UserId = adek2.Id, ThreadId = 3 }
+                // Proramowanie
+                    // Post 1
+                new Posts { Id = 1, Content = "klikasz utwórz projekt i wybierasz ASP.NET core MVC, tyle", CreatedDate = DateTime.UtcNow, Edited = false, UserId = admin.Id, ThreadId = 1},
+                new Posts { Id = 2, Content = "Ale gdzie mam to kliknąć?", CreatedDate = DateTime.UtcNow, Edited = false, UserId = baran.Id, ThreadId = 1 },
+                new Posts { Id = 3, Content = "W Visualu", CreatedDate = DateTime.UtcNow, Edited = false, UserId = admin.Id, ThreadId = 1 },
+                new Posts { Id = 4, Content = "A co to visual?", CreatedDate = DateTime.UtcNow, Edited = false, UserId = baran.Id, ThreadId = 1 },
+                new Posts { Id = 5, Content = "Serio?", CreatedDate = DateTime.UtcNow, Edited = false, UserId = kacper.Id, ThreadId = 1 },
+                new Posts { Id = 6, Content = "XD", CreatedDate = DateTime.UtcNow, Edited = false, UserId = adek.Id, ThreadId = 1 },
+                new Posts { Id = 7, Content = "Zamykam temat, powód: ... nie trzeba podawać", CreatedDate = DateTime.UtcNow, Edited = false, UserId = mod.Id, ThreadId = 1 },
+
+                new Posts { Id = 8, Content = "wpisujesz w ChatGPT co chcesz i dostajesz gotowe rozwiązanie", CreatedDate = DateTime.UtcNow, Edited = false, UserId = adek.Id, ThreadId = 2 },
+                new Posts { Id = 9, Content = "Zamykam temat - nie rozmawiamy tutaj o czarnej magii", CreatedDate = DateTime.UtcNow, Edited = false, UserId = mod.Id, ThreadId = 3 }
             );
-            await context.SaveChangesAsync();
+            //await context.SaveChangesAsync();
+            context.SaveChanges();
         }
+
+
+
+        //public static async Task SeedPosts(IServiceProvider serviceProvider)
+        //{
+        //    using var context2 = new AppDbContext(
+        //    serviceProvider.GetRequiredService<DbContextOptions<AppDbContext>>());
+        //    var userManager2 = serviceProvider.GetRequiredService<UserManager<ForumUser>>();
+
+        //    if (await context2.Posts.AnyAsync())
+        //        return;
+
+        //    var admin2 = await userManager2.FindByEmailAsync("admin@example.com");
+        //    var mod2 = await userManager2.FindByEmailAsync("moderator@example.com");
+        //    var user2 = await userManager2.FindByEmailAsync("uzytkownik@example.com");
+        //    var kacper2 = await userManager2.FindByEmailAsync("Kacper@google.com");
+        //    var baran2 = await userManager2.FindByEmailAsync("Blazej@wp.pl");
+        //    var adek2 = await userManager2.FindByEmailAsync("Adrian@xyz.com");
+
+        //    context2.Posts.AddRange(
+        //        new Posts { Id = 1, Content = "klikasz utwórz projekt i wybierasz ASP.NET core MVC, tyle", CreatedDate = DateTime.UtcNow, Edited = false, UserId = admin2.Id, ThreadId = 1 },
+        //        new Posts { Id = 2, Content = "wpisujesz w ChatGPT co chcesz i dostajesz gotowe rozwiązanie", CreatedDate = DateTime.UtcNow, Edited = false, UserId = mod2.Id, ThreadId = 2 },
+        //        new Posts { Id = 3, Content = "Zamykam temat - nie rozmawiamy tutaj o czarnej magii", CreatedDate = DateTime.UtcNow, Edited = false, UserId = adek2.Id, ThreadId = 3 }
+        //    );
+        //    await context2.SaveChangesAsync();
+        //}
+
+
+
     }
 }
