@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Threading;
 
 namespace ITstudyv4.Data
 {
@@ -171,12 +172,13 @@ namespace ITstudyv4.Data
                 }
             }
         }
-        public static void SeedCategories(IServiceProvider serviceProvider)
+        public static async Task SeedCategories(IServiceProvider serviceProvider)
         {
             using var context = new AppDbContext(
             serviceProvider.GetRequiredService<DbContextOptions<AppDbContext>>());
 
-            if (context.Categories.Any())
+
+            if (await context.Categories.AnyAsync())
                 return;
 
             context.Categories.AddRange(
@@ -185,36 +187,53 @@ namespace ITstudyv4.Data
                 new Categories { Id = 3, Name = "OS", Description = "Wszystko związane z systemami operacyjnymi" },
                 new Categories { Id = 4, Name = "OFFTOPIC", Description = "Wszystkie tematy niezwiązane z Informatyką" }
             );
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
-        public static void SeedThreads(IServiceProvider serviceProvider)
+        public static async Task SeedThreads(IServiceProvider serviceProvider)
         {
             using var context = new AppDbContext(
             serviceProvider.GetRequiredService<DbContextOptions<AppDbContext>>());
+            var userManager = serviceProvider.GetRequiredService<UserManager<ForumUser>>();
 
             if (context.Threads.Any())
                 return;
+
+            var admin = await userManager.FindByEmailAsync("admin@example.com");
+            var mod = await userManager.FindByEmailAsync("moderator@example.com");
+            var user = await userManager.FindByEmailAsync("uzytkownik@example.com");
+            var kacper = await userManager.FindByEmailAsync("Kacper@google.com");
+            var baran = await userManager.FindByEmailAsync("Blazej@wp.pl");
+            var adek = await userManager.FindByEmailAsync("Adrian@xyz.com");
+
             context.Threads.AddRange(
-                new Threads { Id = 1, Title = "C# - ASP.NET core MVC - jak stworzyć projekt?", CreatedAt = DateTime.UtcNow, Views = 45, UserId = "d634f06f-64e5-4e3a-9807-fa1f4c7f9205", CategoryId = 1}, // AnswersId = 1
-                new Threads { Id = 2, Title = "C++ - Jak zrobić kalkulator?", CreatedAt = DateTime.UtcNow, Views = 200, UserId = "5334253c-182e-49af-8cbd-9cf152dddc4c", CategoryId = 1},
-                new Threads { Id = 3, Title = "Haskell - co to?", CreatedAt = DateTime.UtcNow, Views = 5, UserId = "33f61d4a-110b-46ee-b1d4-49566224b571", CategoryId = 2}
+                new Threads { Id = 1, Title = "C# - ASP.NET core MVC - jak stworzyć projekt?", CreatedAt = DateTime.UtcNow, Views = 45, UserId = mod.Id, CategoryId = 1 }, // AnswersId = 1
+                new Threads { Id = 2, Title = "C++ - Jak zrobić kalkulator?", CreatedAt = DateTime.UtcNow, Views = 200, UserId = user.Id, CategoryId = 1 },
+                new Threads { Id = 3, Title = "Haskell - co to?", CreatedAt = DateTime.UtcNow, Views = 5, UserId = kacper.Id, CategoryId = 2 }
             );
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
-        public static void SeedPosts(IServiceProvider serviceProvider)
+        public static async Task SeedPosts(IServiceProvider serviceProvider)
         {
             using var context = new AppDbContext(
             serviceProvider.GetRequiredService<DbContextOptions<AppDbContext>>());
+            var userManager2 = serviceProvider.GetRequiredService<UserManager<ForumUser>>();
 
             if (context.Posts.Any())
                 return;
 
+            var admin2 = await userManager2.FindByEmailAsync("admin@example.com");
+            var mod2 = await userManager2.FindByEmailAsync("moderator@example.com");
+            var user2 = await userManager2.FindByEmailAsync("uzytkownik@example.com");
+            var kacper2 = await userManager2.FindByEmailAsync("Kacper@google.com");
+            var baran2 = await userManager2.FindByEmailAsync("Blazej@wp.pl");
+            var adek2 = await userManager2.FindByEmailAsync("Adrian@xyz.com");
+
             context.Posts.AddRange(
-                new Posts { Id = 1, Content = "klikasz utwórz projekt i wybierasz ASP.NET core MVC, tyle", CreatedDate = DateTime.UtcNow, Edited = false, UserId = "62a8548c-9f94-4143-8e95-f97bd44133fc", ThreadId = 1},
-                new Posts { Id = 2, Content = "wpisujesz w ChatGPT co chcesz i dostajesz gotowe rozwiązanie", CreatedDate = DateTime.UtcNow, Edited = false, UserId = "2683d848-cbd3-4dca-a150-db6b7bc7ab68", ThreadId = 2 },
-                new Posts { Id = 3, Content = "Zamykam temat - nie rozmawiamy tutaj o czarnej magii", CreatedDate = DateTime.UtcNow, Edited = false, UserId = "d634f06f-64e5-4e3a-9807-fa1f4c7f9205", ThreadId = 3 }
+                new Posts { Id = 1, Content = "klikasz utwórz projekt i wybierasz ASP.NET core MVC, tyle", CreatedDate = DateTime.UtcNow, Edited = false, UserId = admin2.Id, ThreadId = 1},
+                new Posts { Id = 2, Content = "wpisujesz w ChatGPT co chcesz i dostajesz gotowe rozwiązanie", CreatedDate = DateTime.UtcNow, Edited = false, UserId = mod2.Id, ThreadId = 2 },
+                new Posts { Id = 3, Content = "Zamykam temat - nie rozmawiamy tutaj o czarnej magii", CreatedDate = DateTime.UtcNow, Edited = false, UserId = adek2.Id, ThreadId = 3 }
             );
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
     }
 }

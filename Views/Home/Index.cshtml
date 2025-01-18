@@ -3,6 +3,58 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Witaj</h1>
+    <h1 class="display-4">Witaj na ITstudy</h1>
 </div>
  
+
+<h1>Wszystkie Kategorie</h1>
+<table class="table table-striped table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>Nazwa</th>
+            <th>Opis</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var category in (IEnumerable<Categories>)ViewBag.AllCategories)
+        {
+            <tr>
+                <td>
+                    <a asp-controller="Threads" asp-action="ShowThreadsInCategory" asp-route-categoryId="@category.Id">
+                        @category.Name
+                    </a>
+                </td>
+                <td>@category.Description</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h1>Wszystkie Tematy</h1>
+
+<table class="table table-striped table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>Tytuł</th>
+            <th>Użytkownik</th>
+            <th>Wyświetlenia</th>
+            <th>Data utworzenia</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var thread in (IEnumerable<Threads>)ViewBag.AllThreads)
+        {
+            <tr>
+                <td>
+                    <a asp-controller="Posts" asp-action="ShowAllPosts" asp-route-threadId="@thread.Id">
+                        @thread.Title
+                    </a>
+                </td>
+                <td>@thread.User?.UserName</td>
+                <td>@thread.Views</td>
+                <td>@thread.CreatedAt.ToShortDateString()</td>
+            </tr>
+        }
+    </tbody>
+</table>
+

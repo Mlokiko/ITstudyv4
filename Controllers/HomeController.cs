@@ -1,6 +1,8 @@
 using System.Diagnostics;
+using ITstudyv4.Data;
 using ITstudyv4.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ITstudyv4.Controllers
@@ -9,15 +11,19 @@ namespace ITstudyv4.Controllers
     [AllowAnonymous]
     public class HomeController : Controller
     {
+        private readonly AppDbContext _context;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, AppDbContext context)
         {
+            _context = context;
             _logger = logger;
         }
 
         public IActionResult Index()
         {
+            ViewBag.AllThreads = _context.Threads.ToList();
+            ViewBag.AllCategories = _context.Categories.ToList();
             return View();
         }
 
