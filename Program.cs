@@ -50,8 +50,8 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     await SeedData.SeedUsersAndRolesAsync(services);
     SeedData.SeedCategories(services);
-    //SeedData.SeedThreads(services);       // Na razie wykluczone bo trzeba ogarn¹æ... wszystko co jest z tym zwi¹zane
-    //SeedData.SeedPosts(services);
+    SeedData.SeedThreads(services);       // Na razie wykluczone bo trzeba ogarn¹æ... wszystko co jest z tym zwi¹zane
+    SeedData.SeedPosts(services);
 }
 
 
