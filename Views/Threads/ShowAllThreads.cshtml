@@ -1,6 +1,6 @@
 ﻿@using System.Security.Claims
 @using ITstudyv4.ViewModels
-@model PaginatedThreadsVM<Threads>
+@model PaginatedListVM<Threads>
 
 @{
     ViewData["Title"] = "Wątki";
@@ -19,7 +19,7 @@
     </thead>
     <tbody>
         <a asp-action="AddNewThread" asp-route-categoryId="@ViewBag.CategoryId" class="btn btn-primary">Dodaj nowy temat</a>
-        @foreach (var thread in Model.Threads)
+        @foreach (var thread in Model.Items)
         {
             <tr>
                 <td>

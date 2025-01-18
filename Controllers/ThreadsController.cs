@@ -62,10 +62,10 @@ namespace ITstudyv4.Controllers
                 .Take(pageSize)
                 .ToListAsync();
 
-            var viewModel = new PaginatedThreadsVM<Threads>
+            var viewModel = new PaginatedListVM<Threads>
             {
-                Threads = threads,
-                TotalThreads = totalThreads,
+                Items = threads,
+                TotalItems = totalThreads,
                 CurrentPage = pageNumber,
                 PageSize = pageSize
             };

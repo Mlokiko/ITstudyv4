@@ -1,5 +1,6 @@
 ﻿using ITstudyv4.Data;
 using ITstudyv4.Models;
+using ITstudyv4.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -16,10 +17,30 @@ namespace ITstudyv4.Controllers
             _context = context;
         }
 
-        public IActionResult ShowAllCategories()
+        //public IActionResult ShowAllCategories()
+        //{
+        //    var categories = _context.Categories.ToList();
+        //    return View(categories);
+        //}
+        public async Task<IActionResult> ShowAllCategories(int pageNumber = 1, int pageSize = 10)
         {
-            var categories = _context.Categories.ToList();
-            return View(categories);
+            var query = _context.Categories.OrderBy(i => i.Id);
+            var totalCategories = await query.CountAsync();
+            var categories = await query
+                .OrderBy(c => c.Id)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            var viewModel = new PaginatedListVM<Categories>
+            {
+                Items = categories,
+                TotalItems = totalCategories,
+                CurrentPage = pageNumber,
+                PageSize = pageSize
+            };
+
+            return View(viewModel);
         }
 
         public IActionResult AddNewCategory()

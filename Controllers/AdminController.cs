@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace ITstudyv4.Controllers
 {
@@ -19,12 +20,40 @@ namespace ITstudyv4.Controllers
             _roleManager = roleManager;
             _context = context;
         }
-        public async Task<IActionResult> ShowAllUsers()
+
+        //public async Task<IActionResult> ShowAllUsersss()
+        //{
+        //    var users = _userManager.Users.ToList();
+        //    var userRolesVM = new List<UserWithRolesVM>();
+
+        //    foreach (var user in users)
+        //    {
+        //        var role = await _userManager.GetRolesAsync(user);
+        //        userRolesVM.Add(new UserWithRolesVM
+        //        {
+        //            UserId = user.Id,
+        //            UserName = user.UserName,
+        //            Email = user.Email,
+        //            ProfilePictureURL = user.ProfilePictureURL,
+        //            JoinDate = user.JoinDate.ToString("dd/MM/yyyy"),
+        //            Role = string.Join(", ", role)
+        //        });
+        //    }
+        //    return View(userRolesVM);
+        //}
+
+        public async Task<IActionResult> ShowAllUsers(int pageNumber = 1, int pageSize = 10)
         {
-            var users = _userManager.Users.ToList();
+            var usersQuery = _userManager.Users.OrderBy(u => u.UserName);
+            var totalUsers = await usersQuery.CountAsync();
+            var paginatedUsers = await usersQuery
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
             var userRolesVM = new List<UserWithRolesVM>();
 
-            foreach (var user in users)
+            foreach (var user in paginatedUsers)
             {
                 var role = await _userManager.GetRolesAsync(user);
                 userRolesVM.Add(new UserWithRolesVM
@@ -37,7 +66,16 @@ namespace ITstudyv4.Controllers
                     Role = string.Join(", ", role)
                 });
             }
-            return View(userRolesVM);
+
+            var viewModel = new PaginatedListVM<UserWithRolesVM>
+            {
+                Items = userRolesVM,
+                TotalItems = totalUsers,
+                CurrentPage = pageNumber,
+                PageSize = pageSize
+            };
+
+            return View(viewModel);
         }
         public async Task<IActionResult> EditUser(string id)
         {
