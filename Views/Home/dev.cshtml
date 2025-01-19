@@ -2,10 +2,10 @@
     ViewData["Title"] = "dev";
 }
 
-<p>Cheat sheet dla naszej strony. Zostawiamy to tutaj aby prościej można było testować stronkę</p>
+<p>Cheat sheet dla naszej strony. Zostawiamy to tutaj aby prościej można było testować stronkę (a raczej ją zepsuć)</p>
+<p>PS. Licznik wyświetleń działa gdy manualnie odświeżymy stronę</p>
 <br />
-<h2>Podstrony do stworzenia:</h2>
-<br />
+
 <h3>Dostęp dla każdego (odwiedzający/niezalogowani)</h3>
 <ul>
     <li class="nav-item">
@@ -28,17 +28,11 @@
 <h3>Dostęp dla Normalnego usera</h3>
 <ul>
     <li>Dodawanie postów</li>
-    <li>NAPOTEM odpisz/napisz post</li>
+    <li>Dodawanie tematów</li>
 </ul>
 
-<h3>Dostęp tylko dla Moderatora (i Admina):</h3>
-<ul>
-    <li>Zbanuj Użytkownika?</li>
-    <li>Ukryj/usuń temat?</li>
-    <li>Ukryj/usuń post?</li>
-</ul>
+<h3>Dostęp tylko dla Moderatora i Admina:</h3>
 
-<h3>Dostępne tylko dla admina:</h3>
 <ul>
     <li class="nav-item">
         <a class="nav-link text-info" asp-area="" asp-controller="Threads" asp-action="AddNewThread">Stwórz Temat</a>(działa poprawnie tylko z poziomu kategorii, stąd nie przypisze się do kategorii)

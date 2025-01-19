@@ -17,7 +17,7 @@ namespace ITstudyv4.Data
             var userManager = serviceProvider.GetRequiredService<UserManager<ForumUser>>();
 
             // Role
-            var roles = new[] { "Admin", "Moderator", "Użytkownik", "Zbanowany" };
+            var roles = new[] { "Admin", "Moderator", "Użytkownik"};
 
             foreach (var role in roles)
             {
@@ -381,10 +381,7 @@ namespace ITstudyv4.Data
             var baran = await userManager.FindByEmailAsync("Blazej@wp.pl");
             var adek = await userManager.FindByEmailAsync("Adrian@xyz.com");
 
-            //await context.Posts.AddRangeAsync(  // i tak i tak żle, chyba wszystko musiałoby bez asynca lecieć, posty wyświetlają się w nieodpowiedniej kolejności
-            //context.Posts.AddRange(
             await context.Posts.AddRangeAsync(
-                // Proramowanie
                     // Post 1
                 new Posts { Content = "klikasz utwórz projekt i wybierasz ASP.NET core MVC, tyle", CreatedDate = DateTime.UtcNow, Edited = false, UserId = admin.Id, ThreadId = 1},
                 new Posts { Content = "Ale gdzie mam to kliknąć?", CreatedDate = DateTime.UtcNow, Edited = false, UserId = baran.Id, ThreadId = 1 },
@@ -393,12 +390,30 @@ namespace ITstudyv4.Data
                 new Posts { Content = "Serio?", CreatedDate = DateTime.UtcNow, Edited = false, UserId = kacper.Id, ThreadId = 1 },
                 new Posts { Content = "XD", CreatedDate = DateTime.UtcNow, Edited = false, UserId = adek.Id, ThreadId = 1 },
                 new Posts { Content = "Zamykam temat, powód: ... nie trzeba podawać", CreatedDate = DateTime.UtcNow, Edited = false, UserId = mod.Id, ThreadId = 1 },
-
-                new Posts { Content = "wpisujesz w ChatGPT co chcesz i dostajesz gotowe rozwiązanie", CreatedDate = DateTime.UtcNow, Edited = false, UserId = adek.Id, ThreadId = 2 },
-                new Posts { Content = "Zamykam temat - nie rozmawiamy tutaj o czarnej magii", CreatedDate = DateTime.UtcNow, Edited = false, UserId = mod.Id, ThreadId = 3 }
+                    // Post 2
+                new Posts { Content = "Zamykam temat - nie rozmawiamy tutaj o czarnej magii", CreatedDate = DateTime.UtcNow, Edited = false, UserId = mod.Id, ThreadId = 2 },
+                    // Post 3
+                new Posts { Content = "Googla nie masz?", CreatedDate = DateTime.UtcNow, Edited = false, UserId = adek.Id, ThreadId = 3 },
+                new Posts { Content = "A co to, elektroda?", CreatedDate = DateTime.UtcNow, Edited = false, UserId = user.Id, ThreadId = 3 },
+                new Posts { Content = "...", CreatedDate = DateTime.UtcNow, Edited = false, UserId = adek.Id, ThreadId = 3 },
+                    // Post 4
+                new Posts { Content = "Takie dziwne coś bez takiego czegoś", CreatedDate = DateTime.UtcNow, Edited = false, UserId = admin.Id, ThreadId = 4 },
+                new Posts { Content = "Dzięki...", CreatedDate = DateTime.UtcNow, Edited = false, UserId = user.Id, ThreadId = 4 },
+                    // Post 5
+                new Posts { Content = "Nie", CreatedDate = DateTime.UtcNow, Edited = false, UserId = admin.Id, ThreadId = 5 },
+                new Posts { Content = "Zdecydowanie nie", CreatedDate = DateTime.UtcNow, Edited = false, UserId = mod.Id, ThreadId = 5 },
+                new Posts { Content = "Tak bardzo nie", CreatedDate = DateTime.UtcNow, Edited = false, UserId = baran.Id, ThreadId = 5 },
+                new Posts { Content = "Masz tyle języków, a ty takie coś wybierasz?", CreatedDate = DateTime.UtcNow, Edited = false, UserId = kacper.Id, ThreadId = 5 },
+                new Posts { Content = "Nie", CreatedDate = DateTime.UtcNow, Edited = false, UserId = user.Id, ThreadId = 5 },
+                new Posts { Content = "OK, ok...", CreatedDate = DateTime.UtcNow, Edited = false, UserId = adek.Id, ThreadId = 5 },
+                    // Post 6
+                new Posts { Content = "I to Jak!", CreatedDate = DateTime.UtcNow, Edited = false, UserId = mod.Id, ThreadId = 6 },
+                    // Post 7
+                new Posts { Content = "Taki żeby wytrzymał visuala i chroma", CreatedDate = DateTime.UtcNow, Edited = false, UserId = admin.Id, ThreadId = 7 },
+                    // Post Ostatni
+                new Posts { Content = "https://youtu.be/dQw4w9WgXcQ", CreatedDate = DateTime.UtcNow, Edited = false, UserId = mod.Id, ThreadId = 18 }
             );
             await context.SaveChangesAsync();
-            //context.SaveChanges();
         }
     }
 }
