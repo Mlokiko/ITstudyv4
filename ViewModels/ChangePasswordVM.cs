@@ -4,7 +4,7 @@ namespace ITstudyv4.ViewModels
 {
     public class ChangePasswordVM
     {
-        [Required]
+        [Required(ErrorMessage = "Aktualne hasło jest wymagane")]
         [DataType(DataType.Password)]
         [Display(Name = "Aktualne hasło")]
         public string? CurrentPassword { get; set; }
