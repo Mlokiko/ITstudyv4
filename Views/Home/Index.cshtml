@@ -24,7 +24,7 @@
         {
             <tr>
                 <td>
-                    <a asp-controller="Threads" asp-action="ShowThreadsInCategory" asp-route-categoryId="@category.Id">
+                    <a asp-controller="Threads" asp-action="ShowThreadsInCategory" asp-route-categoryId="@category.Id" style="font-weight: bold; text-decoration: none;">
                         @category.Name
                     </a>
                 </td>
@@ -49,7 +49,7 @@
         {
             <tr>
                 <td>
-                    <a asp-controller="Posts" asp-action="ShowAllPosts" asp-route-threadId="@thread.Id">
+                    <a asp-controller="Posts" asp-action="ShowAllPosts" asp-route-threadId="@thread.Id" style="font-weight: bold; text-decoration: none;">
                         @thread.Title
                     </a>
                 </td>
@@ -76,7 +76,7 @@
         {
             <tr>
                 <td>
-                    <a asp-controller="Posts" asp-action="ShowAllPosts" asp-route-threadId="@thread.Id">
+                    <a asp-controller="Posts" asp-action="ShowAllPosts" asp-route-threadId="@thread.Id" style="font-weight: bold; text-decoration: none;">
                         @thread.Title
                     </a>
                 </td>

@@ -16,7 +16,7 @@
         {
             <tr>
                 <td>
-                    <a asp-controller="Threads" asp-action="ShowThreadsInCategory" asp-route-categoryId="@category.Id">
+                    <a asp-controller="Threads" asp-action="ShowThreadsInCategory" asp-route-categoryId="@category.Id" style="font-weight: bold; text-decoration: none;">
                         @category.Name
                     </a>
                 </td>
@@ -26,15 +26,15 @@
     </tbody>
 </table>
 
-<div class="pagination">
-     @if (Model.HasPreviousPage)
-     {
-         <a href="@Url.Action("ShowAllCategories", new { pageNumber = Model.CurrentPage - 1, pageSize = Model.PageSize })" class="btn btn-primary m-1">Poprzednia</a>
-     } 
-     <span>Strona @Model.CurrentPage z @Model.TotalPages</span> 
-     @if (Model.HasNextPage) 
-     { 
-         <a href="@Url.Action("ShowAllCategories", new { pageNumber = Model.CurrentPage + 1, pageSize = Model.PageSize })" class="btn btn-primary m-1">Następna</a>
-     } 
- </div>
+<div class="pagination align-items-center">
+    @if (Model.HasPreviousPage)
+    {
+        <a href="@Url.Action("ShowAllCategories", new { pageNumber = Model.CurrentPage - 1, pageSize = Model.PageSize })" class="btn btn-primary m-1">Poprzednia</a>
+    }
+    <span class="mx-2">Strona @Model.CurrentPage z @Model.TotalPages</span>
+    @if (Model.HasNextPage)
+    {
+        <a href="@Url.Action("ShowAllCategories", new { pageNumber = Model.CurrentPage + 1, pageSize = Model.PageSize })" class="btn btn-primary m-1">Następna</a>
+    }
+</div>
 
