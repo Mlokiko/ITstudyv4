@@ -45,6 +45,12 @@ namespace ITstudyv4.Controllers
             return View();
         }
 
+        [AllowAnonymous]
+        public IActionResult Regulations()
+        { 
+            return View();
+        }
+
         public IActionResult dev()
         {
             return View();

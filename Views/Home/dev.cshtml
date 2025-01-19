@@ -8,21 +8,26 @@
 <br />
 <h3>Dostęp dla każdego (odwiedzający/niezalogowani)</h3>
 <ul>
-    <li>Strona główna (na niej wstępnie ostatnie tematy powinny się wyświetlać</li>
-    <li>Wszystkie posty</li>
+    <li class="nav-item">
+        <a class="nav-link text-info" asp-area="" asp-controller="Home" asp-action="Index">Strona główna</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-info" asp-area="" asp-controller="Home" asp-action="Privacy">Polityka prywatności</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-info" asp-area="" asp-controller="Home" asp-action="Regulations">Regulamin</a>
+    </li>
     <li class="nav-item">
         <a class="nav-link text-info" asp-area="" asp-controller="Threads" asp-action="ShowAllThreads">Wszystkie Tematy</a>
     </li>
     <li class="nav-item">
         <a class="nav-link text-info" asp-area="" asp-controller="Categories" asp-action="ShowAllCategories">Wszystkie Kategorie</a>
     </li>
-    <li>Regulamin</li>
-    <li>Kontakt</li>
 </ul>
 
 <h3>Dostęp dla Normalnego usera</h3>
 <ul>
-    <li>Tematy bez odpowiedzi</li>
+    <li>Dodawanie postów</li>
     <li>NAPOTEM odpisz/napisz post</li>
 </ul>
 
