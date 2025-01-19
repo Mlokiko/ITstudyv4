@@ -128,7 +128,7 @@ namespace ITstudyv4.Controllers
                 thread.CategoryId = categoryId;
                 _context.Add(thread);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(ShowAllThreads), new { categoryId });
+                return RedirectToAction(nameof(ShowThreadsInCategory), new { categoryId });
             }
 
             ViewBag.CategoryId = categoryId;
@@ -204,7 +204,7 @@ namespace ITstudyv4.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(ShowAllThreads), new { categoryId = originalThread.CategoryId });
+                return RedirectToAction(nameof(ShowThreadsInCategory), new { categoryId = originalThread.CategoryId });
             }
             return View(thread);
         }
@@ -288,7 +288,7 @@ namespace ITstudyv4.Controllers
 
             _context.Threads.Remove(thread);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(ShowAllThreads), new { categoryId = thread.CategoryId });
+            return RedirectToAction(nameof(ShowThreadsInCategory), new { categoryId = thread.CategoryId });
         }
 
 
