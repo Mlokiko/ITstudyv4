@@ -12,7 +12,7 @@
         <div class="form-group text-center">
             @if (!string.IsNullOrEmpty(Model.ProfilePictureURL))
             {
-                <img src="@Model.ProfilePictureURL" alt="Zdjęcie profilowe" class="img-thumbnail align-items-center rounded-circle" style="max-width: 150px;" />
+                <img src="@Model.ProfilePictureURL" alt="Zdjęcie profilowe" class="img-thumbnail align-items-center rounded-circle" style="width: 150px; height: 150px; object-fit:cover;" />
             }
             else
             {
