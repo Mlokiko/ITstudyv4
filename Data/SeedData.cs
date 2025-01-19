@@ -382,7 +382,7 @@ namespace ITstudyv4.Data
             var adek = await userManager.FindByEmailAsync("Adrian@xyz.com");
 
             await context.Posts.AddRangeAsync(
-                    // Post 1
+                    // Wątek 1
                 new Posts { Content = "klikasz utwórz projekt i wybierasz ASP.NET core MVC, tyle", CreatedDate = DateTime.UtcNow, Edited = false, UserId = admin.Id, ThreadId = 1},
                 new Posts { Content = "Ale gdzie mam to kliknąć?", CreatedDate = DateTime.UtcNow, Edited = false, UserId = baran.Id, ThreadId = 1 },
                 new Posts { Content = "W Visualu", CreatedDate = DateTime.UtcNow, Edited = false, UserId = admin.Id, ThreadId = 1 },
@@ -390,27 +390,53 @@ namespace ITstudyv4.Data
                 new Posts { Content = "Serio?", CreatedDate = DateTime.UtcNow, Edited = false, UserId = kacper.Id, ThreadId = 1 },
                 new Posts { Content = "XD", CreatedDate = DateTime.UtcNow, Edited = false, UserId = adek.Id, ThreadId = 1 },
                 new Posts { Content = "Zamykam temat, powód: ... nie trzeba podawać", CreatedDate = DateTime.UtcNow, Edited = false, UserId = mod.Id, ThreadId = 1 },
-                    // Post 2
+                    // Wątek 2
                 new Posts { Content = "Zamykam temat - nie rozmawiamy tutaj o czarnej magii", CreatedDate = DateTime.UtcNow, Edited = false, UserId = mod.Id, ThreadId = 2 },
-                    // Post 3
+                    // Wątek 3
                 new Posts { Content = "Googla nie masz?", CreatedDate = DateTime.UtcNow, Edited = false, UserId = adek.Id, ThreadId = 3 },
                 new Posts { Content = "A co to, elektroda?", CreatedDate = DateTime.UtcNow, Edited = false, UserId = user.Id, ThreadId = 3 },
                 new Posts { Content = "...", CreatedDate = DateTime.UtcNow, Edited = false, UserId = adek.Id, ThreadId = 3 },
-                    // Post 4
+                    // Wątek 4
                 new Posts { Content = "Takie dziwne coś bez takiego czegoś", CreatedDate = DateTime.UtcNow, Edited = false, UserId = admin.Id, ThreadId = 4 },
                 new Posts { Content = "Dzięki...", CreatedDate = DateTime.UtcNow, Edited = false, UserId = user.Id, ThreadId = 4 },
-                    // Post 5
+                    // Wątek 5
                 new Posts { Content = "Nie", CreatedDate = DateTime.UtcNow, Edited = false, UserId = admin.Id, ThreadId = 5 },
                 new Posts { Content = "Zdecydowanie nie", CreatedDate = DateTime.UtcNow, Edited = false, UserId = mod.Id, ThreadId = 5 },
                 new Posts { Content = "Tak bardzo nie", CreatedDate = DateTime.UtcNow, Edited = false, UserId = baran.Id, ThreadId = 5 },
                 new Posts { Content = "Masz tyle języków, a ty takie coś wybierasz?", CreatedDate = DateTime.UtcNow, Edited = false, UserId = kacper.Id, ThreadId = 5 },
                 new Posts { Content = "Nie", CreatedDate = DateTime.UtcNow, Edited = false, UserId = user.Id, ThreadId = 5 },
                 new Posts { Content = "OK, ok...", CreatedDate = DateTime.UtcNow, Edited = false, UserId = adek.Id, ThreadId = 5 },
-                    // Post 6
+                    // Wątek 6
                 new Posts { Content = "I to Jak!", CreatedDate = DateTime.UtcNow, Edited = false, UserId = mod.Id, ThreadId = 6 },
-                    // Post 7
+                    // Wątek 7
                 new Posts { Content = "Taki żeby wytrzymał visuala i chroma", CreatedDate = DateTime.UtcNow, Edited = false, UserId = admin.Id, ThreadId = 7 },
-                    // Post Ostatni
+                    // Wątek 8
+                new Posts { Content = "Szypki", CreatedDate = DateTime.UtcNow, Edited = false, UserId = admin.Id, ThreadId = 8 },
+                    // Wątek 9
+                new Posts { Content = "rej****ng lepszy", CreatedDate = DateTime.UtcNow, Edited = true, UserId = baran.Id, ThreadId = 9 },
+                new Posts { Content = "Słownictwo", CreatedDate = DateTime.UtcNow, Edited = false, UserId = admin.Id, ThreadId = 9 },
+                    // Wątek 10
+                new Posts { Content = "A próbowałeś go włonczyc i wylonczyc?", CreatedDate = DateTime.UtcNow, Edited = false, UserId = baran.Id, ThreadId = 10 },
+                new Posts { Content = "*włączyć", CreatedDate = DateTime.UtcNow, Edited = false, UserId = admin.Id, ThreadId = 10 },
+                new Posts { Content = "GrammarNazi..", CreatedDate = DateTime.UtcNow, Edited = false, UserId = baran.Id, ThreadId = 10 },
+                    // Wątek 11
+                new Posts { Content = "To go też wywal", CreatedDate = DateTime.UtcNow, Edited = false, UserId = admin.Id, ThreadId = 11 },
+                    // Wątek 12
+                new Posts { Content = "BTW. I User Arch.. ale tak serio korzystam, i się męczę jak mam coś robić w visualu przez virtualkę xD", CreatedDate = DateTime.UtcNow, Edited = false, UserId = admin.Id, ThreadId = 12 },
+                new Posts { Content = "Ale to na lapku, pc siedzi na zmodowanym windowsie", CreatedDate = DateTime.UtcNow, Edited = false, UserId = admin.Id, ThreadId = 12 },
+                    // Wątek 13
+                new Posts { Content = "Pożreć go", CreatedDate = DateTime.UtcNow, Edited = false, UserId = admin.Id, ThreadId = 13 },
+                    // Wątek 14
+                new Posts { Content = "Wyrzuciś Maca przez okno i pójś po prawdziwego Maca - do Maca", CreatedDate = DateTime.UtcNow, Edited = false, UserId = baran.Id, ThreadId = 14 },
+                new Posts { Content = "Albo pójść do sklepu po czekolade", CreatedDate = DateTime.UtcNow, Edited = false, UserId = adek.Id, ThreadId = 14 },
+                    // Wątek 15
+                new Posts { Content = "Nie", CreatedDate = DateTime.UtcNow, Edited = false, UserId = kacper.Id, ThreadId = 15 },
+                    // Wątek 16
+                new Posts { Content = "Na pewno taki co ma naklejke z nadgryzionym jabłkiem na tylnim błotniku", CreatedDate = DateTime.UtcNow, Edited = false, UserId = mod.Id, ThreadId = 16 },
+                    // Wątek 17
+                new Posts { Content = "Jak się bezsensownie wypisuje jakiejś posty to potem tak jest, ale chej, paginacja przynajmniej działa...", CreatedDate = DateTime.UtcNow, Edited = false, UserId = admin.Id, ThreadId = 17 },
+                new Posts { Content = "Po prostu nie mam siły żeby robić coś sensownego, to może ktoś się chociaż uśmiechnie", CreatedDate = DateTime.UtcNow, Edited = false, UserId = admin.Id, ThreadId = 17 },
+                    // Wątek 18 Ostatni
                 new Posts { Content = "https://youtu.be/dQw4w9WgXcQ", CreatedDate = DateTime.UtcNow, Edited = false, UserId = mod.Id, ThreadId = 18 }
             );
             await context.SaveChangesAsync();
