@@ -9,5 +9,5 @@
 <h1>Domyślne dane</h1>
   <h3>Projekt domyślnie seeduje dane</h3>
   <li>Można znależć ich dane w Data/SeedData.cs </li>
-  <li>Domyślny admin ma username: Admin, Hasło: Admin@123</li>
+  <li><h2>Domyślny admin ma username: Admin, Hasło: Admin@123</h2></li>
   <li>przykładowy użytkownik: username: Baran, Hasło: blazej@123</li>
