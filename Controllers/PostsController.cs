@@ -46,7 +46,7 @@ namespace ITstudyv4.Controllers
             ViewBag.CategoryName = thread.Category?.Name ?? "Brak kategorii";
             return View(posts);
         }
-
+        [Authorize]
         public IActionResult AddNewPost(int threadId)
         {
             ViewBag.ThreadId = threadId;
@@ -54,6 +54,7 @@ namespace ITstudyv4.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddNewPost(Posts post)
         {
@@ -80,7 +81,8 @@ namespace ITstudyv4.Controllers
             ViewBag.ThreadId = post.ThreadId;
             return View(post);
         }
-        //test
+
+        [Authorize]
         public async Task<IActionResult> EditPost(int? id)
         {
             if (id == null)
@@ -105,6 +107,7 @@ namespace ITstudyv4.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditPost(int id, [Bind("Id,Content")] Posts post)
         {
@@ -148,14 +151,12 @@ namespace ITstudyv4.Controllers
                         throw;
                     }
                 }
-
                 return RedirectToAction(nameof(ShowAllPosts), new { threadId = originalPost.ThreadId });
             }
-
             return View(post);
         }
 
-
+        [Authorize]
         public async Task<IActionResult> DeletePost(int? id)
         {
             if (id == null)
@@ -179,6 +180,7 @@ namespace ITstudyv4.Controllers
             return View(post);
         }
 
+        [Authorize]
         [HttpPost, ActionName("DeletePost")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
