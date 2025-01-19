@@ -22,6 +22,12 @@ namespace ITstudyv4.Controllers
         }
 
         [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
