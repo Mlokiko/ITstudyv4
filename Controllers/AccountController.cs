@@ -11,7 +11,6 @@ namespace ITstudyv4.Controllers
     {
         private readonly SignInManager<ForumUser> signInManager;
         private readonly UserManager<ForumUser> userManager;
-
         public AccountController(SignInManager<ForumUser> signInManager, UserManager<ForumUser> userManager)
         {
             this.signInManager = signInManager;
@@ -28,19 +27,19 @@ namespace ITstudyv4.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginVM model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                //login
-               var result = await signInManager.PasswordSignInAsync(model.UserName!, model.Password!,model.RememberMe, false);
-
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Index", "Home");
-                }
-
-                ModelState.AddModelError("", "Nieprawidłowa nazwa użytkownika lub hasło");
                 return View(model);
             }
+
+            var result = await signInManager.PasswordSignInAsync(model.UserName!, model.Password!, model.RememberMe, false);
+            if (result.Succeeded)
+            {
+                TempData["Message"] = "Pomyślnie zalogowano.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            ModelState.AddModelError("", "Nieprawidłowa nazwa użytkownika lub hasło");
             return View(model);
         }
 
@@ -54,42 +53,47 @@ namespace ITstudyv4.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterVM model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                ForumUser user = new()
-                {
-                    UserName = model.UserName,
-                    Email = model.Email,
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    JoinDate = DateTime.UtcNow.Date, // Do wyświetlania możemy użyć .Today, a pełną datę dawać tylko w przypadku zapisywania do bazy
-                };
-
-                var result = await userManager.CreateAsync(user, model.Password!);
-                await userManager.AddToRoleAsync(user, "Użytkownik");  // Tak jakby bez sprawdzania czy rola istnieje, ale to i tak nie powinno się wydarzyć
-
-                if (result.Succeeded)
-                {
-                    await signInManager.SignInAsync(user, false);
-
-                    return RedirectToAction("Index", "Home");
-                }
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
+                return View(model);
             }
+
+            ForumUser user = new()
+            {
+                UserName = model.UserName,
+                Email = model.Email,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                JoinDate = DateTime.UtcNow.Date,
+            };
+
+            var result = await userManager.CreateAsync(user, model.Password!);
+            await userManager.AddToRoleAsync(user, "Użytkownik");
+            if (result.Succeeded)
+            {
+                await signInManager.SignInAsync(user, false);
+                TempData["Message"] = "Pomyślnie stworzono konto.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+
             return View(model);
         }
 
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
+            TempData["Message"] = "Pomyślnie wylogowano.";
             return RedirectToAction("Index", "Home"); 
         }
+
+        [Authorize]
         public async Task<IActionResult> ManageAccount()
         {
-            // Raczej nie potrzebne bo sprawdzamy czy user jest zalogowany w każdej akcji... chyba
             var user = await userManager.GetUserAsync(User);
             if (user == null)
             {
@@ -97,7 +101,6 @@ namespace ITstudyv4.Controllers
             }
 
             var role = await userManager.GetRolesAsync(user);
-            // albo ForumUser, albo dedykowany ViewModel, ale po co niepotrzebne klasy tworzyć?
             var model = new UserWithRolesVM
             {
                 UserId = user.Id,
@@ -112,6 +115,7 @@ namespace ITstudyv4.Controllers
             return View(model);
         }
 
+        [Authorize]
         public async Task<IActionResult> ChangeAboutMe(string id)
         {
             var user = await userManager.FindByIdAsync(id);
@@ -119,19 +123,22 @@ namespace ITstudyv4.Controllers
             {
                 return NotFound();
             }
+
             var model = new UserWithRolesVM
             {
                 UserId = user.Id,
                 Bio = user.Bio
             };
+
             return View(model);
         }
 
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangeAboutMe(UserWithRolesVM model)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || model.UserId == null)
             {
                 return View(model);
             }
@@ -168,7 +175,7 @@ namespace ITstudyv4.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePassword(ChangePasswordVM model)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || model.CurrentPassword == null || model.NewPassword == null)
             {
                 return View(model);
             }
@@ -194,6 +201,7 @@ namespace ITstudyv4.Controllers
             return View(model);
         }
 
+        [Authorize]
         public async Task<IActionResult> ChangeEmail(string id)
         {
             var user = await userManager.FindByIdAsync(id);
@@ -201,18 +209,22 @@ namespace ITstudyv4.Controllers
             {
                 return NotFound();
             }
+
             var model = new UserWithRolesVM
             {
                 UserId = user.Id,
                 Email = user.Email
             };
+
             return View(model);
         }
+
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangeEmail(UserWithRolesVM model)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || model.UserId == null)
             {
                 return View(model);
             }
@@ -239,6 +251,7 @@ namespace ITstudyv4.Controllers
             return RedirectToAction("ManageAccount");
         }
 
+        [Authorize]
         public async Task<IActionResult> ChangeProfilePicture(string id)
         {
             var user = await userManager.FindByIdAsync(id);
@@ -246,19 +259,22 @@ namespace ITstudyv4.Controllers
             {
                 return NotFound();
             }
+
             var model = new UserWithRolesVM
             {
                 UserId = user.Id,
                 ProfilePictureURL = user.ProfilePictureURL
             };
+
             return View(model);
         }
 
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangeProfilePicture(UserWithRolesVM model)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || model.UserId == null)    // Trochę bez sensu sprawdzanie UserId, ale dodałem bo na dole w FindByAsync próło się o możliwość pustego stringa
             {
                 return View(model);
             }
@@ -270,7 +286,6 @@ namespace ITstudyv4.Controllers
             }
 
             user.ProfilePictureURL = model.ProfilePictureURL;
-
             var updateResult = await userManager.UpdateAsync(user);
             if (!updateResult.Succeeded)
             {
@@ -285,6 +300,8 @@ namespace ITstudyv4.Controllers
             return RedirectToAction("ManageAccount");
         }
 
+        [Authorize]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteAccount(string id)
         {
             var user = await userManager.FindByIdAsync(id);
@@ -294,7 +311,9 @@ namespace ITstudyv4.Controllers
             }
             return View(user);
         }
+
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteAccountConfirmed(string id)
         {
@@ -308,7 +327,7 @@ namespace ITstudyv4.Controllers
             if (result.Succeeded)
             {
                 await signInManager.SignOutAsync();
-                TempData["Message"] = "Konto użytkownika zostało usunięte.";
+                TempData["Message"] = "Twoje konto zostało usunięte.";
                 return RedirectToAction("Index", "Home");
             }
 
@@ -321,12 +340,3 @@ namespace ITstudyv4.Controllers
         }
     }
 }
-
-//metody userManagera:
-//
-//ChangeEmailAsync
-// AddToRolesAsync (może zamiast naszych rang? zmodyfikować istniejące już (i tak się tworzą w bazie danych)
-// ChangePasswordAsync
-// DeleteAsync (to chyba usuwa użytkownika)
-// 
-// FindByLoginAsync (przyda się na potem, przy tworzeniu strony wyszukiwania userów)

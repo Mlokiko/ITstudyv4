@@ -6,7 +6,12 @@
 }
 
 <h2 class="text-center text-info">Zarządzanie kategoriami</h2>
-
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Message"]
+    </div>
+}
 <div>
     <a href="@Url.Action("AddNewCategory", "Categories")" class="btn btn-primary">Stwórz nową</a>
 </div><br />

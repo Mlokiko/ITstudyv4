@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace ITstudyv4.Controllers
 {
@@ -19,12 +20,20 @@ namespace ITstudyv4.Controllers
             _roleManager = roleManager;
             _context = context;
         }
-        public async Task<IActionResult> ShowAllUsers()
+
+        [Authorize(Roles = "Admin, Moderator")]
+        public async Task<IActionResult> ShowAllUsers(int pageNumber = 1, int pageSize = 10)
         {
-            var users = _userManager.Users.ToList();
+            var usersQuery = _userManager.Users.OrderBy(u => u.UserName);
+            var totalUsers = await usersQuery.CountAsync();
+            var paginatedUsers = await usersQuery
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
             var userRolesVM = new List<UserWithRolesVM>();
 
-            foreach (var user in users)
+            foreach (var user in paginatedUsers)
             {
                 var role = await _userManager.GetRolesAsync(user);
                 userRolesVM.Add(new UserWithRolesVM
@@ -37,8 +46,19 @@ namespace ITstudyv4.Controllers
                     Role = string.Join(", ", role)
                 });
             }
-            return View(userRolesVM);
+
+            var viewModel = new PaginatedListVM<UserWithRolesVM>
+            {
+                Items = userRolesVM,
+                TotalItems = totalUsers,
+                CurrentPage = pageNumber,
+                PageSize = pageSize
+            };
+
+            return View(viewModel);
         }
+
+        [Authorize(Roles = "Admin, Moderator")]
         public async Task<IActionResult> EditUser(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
@@ -63,10 +83,11 @@ namespace ITstudyv4.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin, Moderator")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditUser(EditUserVM model)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || model.UserId == null)
             {
                 ViewBag.AllRoles = _roleManager.Roles.Select(r => r.Name).ToList();
                 return View(model);
@@ -95,7 +116,6 @@ namespace ITstudyv4.Controllers
                 return View(model);
             }
 
-            // Update roles
             var currentRoles = await _userManager.GetRolesAsync(user);
             var rolesToAdd = model.Roles.Except(currentRoles).ToList();
             var rolesToRemove = currentRoles.Except(model.Roles).ToList();
@@ -113,6 +133,8 @@ namespace ITstudyv4.Controllers
             TempData["Message"] = "Użytkownik zaktualizowany.";
             return RedirectToAction("ShowAllUsers");
         }
+
+        [Authorize(Roles = "Admin, Moderator")]
         public async Task<IActionResult> DeleteUser(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
@@ -122,7 +144,9 @@ namespace ITstudyv4.Controllers
             }
             return View(user);
         }
+
         [HttpPost]
+        [Authorize(Roles = "Admin, Moderator")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteUserConfirmed(string id)
         {

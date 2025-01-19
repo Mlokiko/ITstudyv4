@@ -8,7 +8,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
@@ -60,7 +59,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
-// app.UseAuthentication(); // to chyba nie jest potrzebne, wklejam bo mo¿e sie przydaæ XD
+//app.UseAuthentication(); // to chyba nie jest potrzebne, wklejam bo mo¿e sie przydaæ XD
 
 app.MapControllerRoute(
     name: "default",
