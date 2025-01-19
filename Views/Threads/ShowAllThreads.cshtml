@@ -2,6 +2,7 @@
 @model ITstudyv4.ViewModels.PaginatedListVM<Threads>
 @{
     ViewData["Title"] = "Wątki";
+    var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier) ;
 }
 
 <h1 class="text-center bg-dark text-white p-2 mb-0 rounded-top">Wszystkie Tematy</h1>
@@ -12,6 +13,11 @@
             <th>Użytkownik</th>
             <th>Wyświetlenia</th>
             <th>Data utworzenia</th>
+            @if (Model.Items.Any(thread => thread.UserId == currentUserId) || User.IsInRole("Admin") || User.IsInRole("Moderator"))
+            {
+                <th>Edytuj</th>
+                <th>Usuń</th>
+            }
         </tr>
     </thead>
     <tbody>
