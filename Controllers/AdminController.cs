@@ -142,7 +142,19 @@ namespace ITstudyv4.Controllers
             {
                 return NotFound();
             }
-            return View(user);
+
+            var role = await _userManager.GetRolesAsync(user);
+            var model = new UserWithRolesVM
+            {
+                UserId = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                Role = string.Join(", ", role),
+                ProfilePictureURL = user.ProfilePictureURL,
+                Bio = user.Bio,
+                JoinDate = user.JoinDate.ToString("dd/MM/yyyy"),
+            };
+            return View(model);
         }
 
         [HttpPost]

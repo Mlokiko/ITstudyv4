@@ -1,8 +1,10 @@
-﻿using ITstudyv4.Models;
+﻿using ITstudyv4.Data;
+using ITstudyv4.Models;
 using ITstudyv4.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Data;
 
 namespace ITstudyv4.Controllers
@@ -11,10 +13,12 @@ namespace ITstudyv4.Controllers
     {
         private readonly SignInManager<ForumUser> signInManager;
         private readonly UserManager<ForumUser> userManager;
-        public AccountController(SignInManager<ForumUser> signInManager, UserManager<ForumUser> userManager)
+        private readonly AppDbContext context;
+        public AccountController(SignInManager<ForumUser> signInManager, UserManager<ForumUser> userManager, AppDbContext context)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
+            this.context = context;
         }
 
         [AllowAnonymous]
@@ -301,7 +305,6 @@ namespace ITstudyv4.Controllers
         }
 
         [Authorize]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteAccount(string id)
         {
             var user = await userManager.FindByIdAsync(id);
@@ -309,12 +312,23 @@ namespace ITstudyv4.Controllers
             {
                 return NotFound();
             }
-            return View(user);
+
+            var role = await userManager.GetRolesAsync(user);
+            var model = new UserWithRolesVM
+            {
+                UserId = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                Role = string.Join(", ", role),
+                ProfilePictureURL = user.ProfilePictureURL,
+                Bio = user.Bio,
+                JoinDate = user.JoinDate.ToString("dd/MM/yyyy"),
+            };
+            return View(model);
         }
 
         [HttpPost]
         [Authorize]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteAccountConfirmed(string id)
         {
             var user = await userManager.FindByIdAsync(id);
@@ -322,6 +336,9 @@ namespace ITstudyv4.Controllers
             {
                 return NotFound();
             }
+
+            var threads = context.Threads.Where(o => o.UserId == id);
+            context.Threads.RemoveRange(threads);
 
             var result = await userManager.DeleteAsync(user);
             if (result.Succeeded)

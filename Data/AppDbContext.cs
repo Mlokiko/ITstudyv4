@@ -15,16 +15,6 @@ namespace ITstudyv4.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-
-            // Chyba niepotrzebne - IdentityUser ma już UserName i Email i powienien je sam sprawdzać
-            //builder.Entity<ForumUser>()
-            //    .Property(c => c.UserName)
-            //    .IsRequired();
-
-            //builder.Entity<ForumUser>()
-            //    .Property(c => c.PasswordHash)
-            //    .IsRequired();
-
             // Jak wymusić żeby było unique?
             builder.Entity<ForumUser>()
                 .Property(c => c.Email)
@@ -36,7 +26,6 @@ namespace ITstudyv4.Data
                 .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             // Opis categori wymagany i nie większy od 255, Name wymagane
-            // ID ponoć będzie się inkrementować samo
             builder.Entity<Categories>()
                 .Property(c => c.Description)
                 .IsRequired()
@@ -58,19 +47,17 @@ namespace ITstudyv4.Data
                 .HasForeignKey(p => p.ThreadId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Może zadziałal i ustawi datę prawidłowo, trzeba potem to sprawdzić
             builder.Entity<Posts>()
                 .Property(c => c.CreatedDate)
                 .IsRequired()
                 .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             // Można ustawić max długość postu tutaj, nwm czy chcemy czy nie, raczej chcemy, ale na jaką wartość?
-            // Sprawdzić czy będzie działać z dłuższymi wartościami, tzn, czy tworzy wewnętrznie varchara, text czy co w bazie danych
             builder.Entity<Posts>()
                 .Property(c => c.Content)
+                .HasMaxLength(1000)
                 .IsRequired();
 
-            // Sprawdzić czy ustawia prawidłowo to 0, na czuja to dałem
             builder.Entity<Posts>()
                 .Property(c => c.Edited)
                 .IsRequired()

@@ -1,27 +1,38 @@
-﻿@model ITstudyv4.Models.ForumUser
+﻿@model ITstudyv4.ViewModels.UserWithRolesVM
 
 @{
     ViewData["Title"] = "Usuń Konto";
 }
-<h2 class="text-center text-info">Usuń Konto</h2>
+<div class="text-center">
+    <h2 class="text-info">Usuń Konto</h2>
+    <br>
+    <h3>Jesteś pewien że chcesz usunąć swoje Konto?</h3>
+    <br />
+    <h4 class="text-warning">Usunięcie konta spowoduje usunięcie wszystkich twoich postów jak i wątków/tematów które założyłeś/aś</h4>
 
-<h3>Jesteś pewien że chcesz usunąć swoje Konto?</h3>
+    <div>
+        <p>Nazwa użytkownika: @Model.UserName</p>
+        <p>Email: @Model.Email</p>
+        <p>
+            Zdjęcie profilowe:         <div class="form-group">
+                @if (!string.IsNullOrEmpty(Model.ProfilePictureURL))
+                {
+                    <img src="@Model.ProfilePictureURL" alt="Zdjęcie profilowe" class="img-thumbnail align-items-center rounded-circle" style="width: 150px; height: 150px; object-fit:cover;" />
+                }
+                else
+                {
+                    <p>Nie ustawiono zdjęcia profilowego.</p>
+                }
+            </div>
+        </p>
+        <p>Ranga: @Model.Role</p>
+    </div>
 
-<div>
-    <p>Nazwa użytkownika: @Model.UserName</p>
-    <p>Email: @Model.Email</p>
-    <p>Zdjęcie profilowe: @Model.ProfilePictureURL</p>
-    <p>Ranga: TODO</p>
+    <form asp-action="DeleteAccountConfirmed" method="post">
+        <input type="hidden" name="id" value="@Model.UserId" />
+        <button type="submit" class="btn btn-danger">Usuń</button>
+        <a asp-action="ManageAccount" class="btn btn-secondary">Anuluj</a>
+    </form>
 </div>
 
-<form asp-action="DeleteAccountConfirmed" method="post">
-    <input type="hidden" name="id" value="@Model.Id" />
-    <button type="submit" class="btn btn-danger">Usuń</button>
-    <a asp-action="ManageAccount" class="btn btn-secondary">Anuluj</a>
-</form>
-
-@* w hidden jest id podawane - teoretycznie wystarczy zmodyfikować tego posta i można usunąć dowolnego użytkownika, gdzie nie chcemy żeby się userzy nawzajem usuwali...*@
-@* Ale na dobrą sprawe, jest to tak długie że chyba nie ma szansy na takie frywolne "usuwanie"*@
-
-@* <input type="hidden" asp-for="UserId" /> *@
 
