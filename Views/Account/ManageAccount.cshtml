@@ -20,16 +20,16 @@
             }
             else{<p>Nie ustawiono zdjęcia profilowego.</p>}
         </div>
-        <a href="@Url.Action("ChangeProfilePicture", "Account", new { id = Model.UserId })" class="btn btn-info m-1">Zmień zdjęcie profilowe</a>
+        <a href="@Url.Action("ChangeProfilePicture", "Account", new { id = Model.UserId })" class="btn btn-primary m-1">Zmień zdjęcie profilowe</a>
         <p>E-mail: @Model.Email</p>
-        <a href="@Url.Action("ChangeEmail", "Account", new { id = Model.UserId })" class="btn btn-info m-1">Zmień Email</a>
-        <a href="@Url.Action("ChangePassword", "Account", new { id = Model.UserId })" class="btn btn-info m-1">Zmień hasło</a>
+        <a href="@Url.Action("ChangeEmail", "Account", new { id = Model.UserId })" class="btn btn-primary m-1">Zmień Email</a>
+        <a href="@Url.Action("ChangePassword", "Account", new { id = Model.UserId })" class="btn btn-primary m-1">Zmień hasło</a>
         <p>Data Dołączenia:  @Model.JoinDate</p>
         @if (string.IsNullOrEmpty(Model.Bio))
         {<p>O sobie: Brak Opisu</p>}
         else
         {<p>O sobie: @Model.Bio</p>}
-        <a href="@Url.Action("ChangeAboutMe", "Account", new { id = Model.UserId })" class="btn btn-info m-1">Zmień "O sobie"</a>
+        <a href="@Url.Action("ChangeAboutMe", "Account", new { id = Model.UserId })" class="btn btn-primary m-1">Zmień "O sobie"</a>
         <p>Ranga: @Model.Role</p>
         <a href="@Url.Action("DeleteAccount", "Account", new { id = Model.UserId })" class="btn btn-danger m-1">Usuń konto</a>
     </div>

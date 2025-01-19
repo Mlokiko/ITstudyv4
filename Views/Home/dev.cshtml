@@ -32,15 +32,13 @@
 <h3>Dostęp dla Normalnego usera</h3>
 <ul>
     <li>Dodawanie postów</li>
-    <li>Dodawanie tematów</li>
+    <li class="nav-item">
+        <a class="nav-link text-info" asp-area="" asp-controller="Threads" asp-action="AddNewThread">Dodawanie tematów</a>(działa poprawnie tylko z poziomu kategorii, stąd nie przypisze się do kategorii)
+    </li>
 </ul>
 
 <h3>Dostęp tylko dla Moderatora i Admina:</h3>
-
 <ul>
-    <li class="nav-item">
-        <a class="nav-link text-info" asp-area="" asp-controller="Threads" asp-action="AddNewThread">Stwórz Temat</a>(działa poprawnie tylko z poziomu kategorii, stąd nie przypisze się do kategorii)
-    </li>
     <li class="nav-item">
         <a class="nav-link text-info" asp-area="" asp-controller="Categories" asp-action="AddNewCategory">Stwórz kategorię</a>
     </li>
