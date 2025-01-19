@@ -80,7 +80,7 @@ namespace ITstudyv4.Controllers
             ViewBag.ThreadId = post.ThreadId;
             return View(post);
         }
-
+        //test
         public async Task<IActionResult> EditPost(int? id)
         {
             if (id == null)
