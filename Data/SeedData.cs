@@ -17,7 +17,7 @@ namespace ITstudyv4.Data
             var userManager = serviceProvider.GetRequiredService<UserManager<ForumUser>>();
 
             // Role
-            var roles = new[] { "Admin", "Moderator", "Użytkownik" };
+            var roles = new[] { "Admin", "Moderator", "Użytkownik", "Zbanowany" };
 
             foreach (var role in roles)
             {
@@ -174,7 +174,133 @@ namespace ITstudyv4.Data
                     await userManager.AddToRoleAsync(uzytkownik4, "Użytkownik");
                 }
             }
+
+            // Tworzenie konta użytkownika5
+            var uzytkownikEmail5 = "test5@xyz.com";
+            var uzytkownikPassword5 = "test5@123";
+            var uzytkownikUserName5 = "test5";
+            var uzytkownikImage5 = "https://greenvilleanimal.com/wp-content/uploads/2021/08/cat-coughing-greenville-mi.jpg";
+            var uzytkownikBio5 = "lubie koty";
+
+            if (await userManager.FindByEmailAsync(uzytkownikEmail5) == null)
+            {
+                var uzytkownik5 = new ForumUser
+                {
+                    UserName = uzytkownikUserName5,
+                    Email = uzytkownikEmail5,
+                    ProfilePictureURL = uzytkownikImage5,
+                    Bio = uzytkownikBio5
+
+                };
+
+                var result = await userManager.CreateAsync(uzytkownik5, uzytkownikPassword5);
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(uzytkownik5, "Użytkownik");
+                }
+            }
+
+            // Tworzenie konta użytkownika6
+            var uzytkownikEmail6 = "test6@xyz.com";
+            var uzytkownikPassword6 = "test6@123";
+            var uzytkownikUserName6 = "test6";
+            var uzytkownikImage6 = "https://greenvilleanimal.com/wp-content/uploads/2021/08/cat-coughing-greenville-mi.jpg";
+            var uzytkownikBio6 = "lubie koty";
+
+            if (await userManager.FindByEmailAsync(uzytkownikEmail6) == null)
+            {
+                var uzytkownik6 = new ForumUser
+                {
+                    UserName = uzytkownikUserName6,
+                    Email = uzytkownikEmail6,
+                    ProfilePictureURL = uzytkownikImage6,
+                    Bio = uzytkownikBio6
+
+                };
+
+                var result = await userManager.CreateAsync(uzytkownik6, uzytkownikPassword6);
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(uzytkownik6, "Użytkownik");
+                }
+            }
+
+            // Tworzenie konta użytkownika7
+            var uzytkownikEmail7 = "test7@xyz.com";
+            var uzytkownikPassword7 = "test7@123";
+            var uzytkownikUserName7 = "test7";
+            var uzytkownikImage7 = "https://greenvilleanimal.com/wp-content/uploads/2021/08/cat-coughing-greenville-mi.jpg";
+            var uzytkownikBio7 = "lubie koty";
+
+            if (await userManager.FindByEmailAsync(uzytkownikEmail7) == null)
+            {
+                var uzytkownik7 = new ForumUser
+                {
+                    UserName = uzytkownikUserName7,
+                    Email = uzytkownikEmail7,
+                    ProfilePictureURL = uzytkownikImage7,
+                    Bio = uzytkownikBio7
+
+                };
+
+                var result = await userManager.CreateAsync(uzytkownik7, uzytkownikPassword7);
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(uzytkownik7, "Użytkownik");
+                }
+            }
+
+            // Tworzenie konta użytkownika8
+            var uzytkownikEmail8 = "test8@xyz.com";
+            var uzytkownikPassword8 = "test8@123";
+            var uzytkownikUserName8 = "test8";
+            var uzytkownikImage8 = "https://greenvilleanimal.com/wp-content/uploads/2021/08/cat-coughing-greenville-mi.jpg";
+            var uzytkownikBio8 = "lubie koty";
+
+            if (await userManager.FindByEmailAsync(uzytkownikEmail8) == null)
+            {
+                var uzytkownik8 = new ForumUser
+                {
+                    UserName = uzytkownikUserName8,
+                    Email = uzytkownikEmail8,
+                    ProfilePictureURL = uzytkownikImage8,
+                    Bio = uzytkownikBio8
+
+                };
+
+                var result = await userManager.CreateAsync(uzytkownik8, uzytkownikPassword8);
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(uzytkownik8, "Użytkownik");
+                }
+            }
+
+            // Tworzenie konta użytkownika9
+            var uzytkownikEmail9 = "test9@xyz.com";
+            var uzytkownikPassword9 = "test9@123";
+            var uzytkownikUserName9 = "test9";
+            var uzytkownikImage9 = "https://greenvilleanimal.com/wp-content/uploads/2021/08/cat-coughing-greenville-mi.jpg";
+            var uzytkownikBio9 = "lubie koty";
+
+            if (await userManager.FindByEmailAsync(uzytkownikEmail9) == null)
+            {
+                var uzytkownik9 = new ForumUser
+                {
+                    UserName = uzytkownikUserName9,
+                    Email = uzytkownikEmail9,
+                    ProfilePictureURL = uzytkownikImage9,
+                    Bio = uzytkownikBio9
+
+                };
+
+                var result = await userManager.CreateAsync(uzytkownik9, uzytkownikPassword9);
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(uzytkownik9, "Użytkownik");
+                }
+            }
         }
+
         public static async Task SeedCategories(IServiceProvider serviceProvider)
         {
             using var scope = serviceProvider.CreateScope();
@@ -193,6 +319,7 @@ namespace ITstudyv4.Data
             );
             await context.SaveChangesAsync();
         }
+
         public static async Task SeedThreads(IServiceProvider serviceProvider)
         {
             using var scope = serviceProvider.CreateScope();
@@ -237,6 +364,7 @@ namespace ITstudyv4.Data
             );
             await context.SaveChangesAsync();
         }
+
         public static async Task SeedPosts(IServiceProvider serviceProvider)
         {
             using var scope = serviceProvider.CreateScope();
@@ -253,8 +381,9 @@ namespace ITstudyv4.Data
             var baran = await userManager.FindByEmailAsync("Blazej@wp.pl");
             var adek = await userManager.FindByEmailAsync("Adrian@xyz.com");
 
-            //await context.Posts.AddRangeAsync(
-            context.Posts.AddRange(
+            //await context.Posts.AddRangeAsync(  // i tak i tak żle, chyba wszystko musiałoby bez asynca lecieć, posty wyświetlają się w nieodpowiedniej kolejności
+            //context.Posts.AddRange(
+            await context.Posts.AddRangeAsync(
                 // Proramowanie
                     // Post 1
                 new Posts { Content = "klikasz utwórz projekt i wybierasz ASP.NET core MVC, tyle", CreatedDate = DateTime.UtcNow, Edited = false, UserId = admin.Id, ThreadId = 1},
@@ -268,37 +397,8 @@ namespace ITstudyv4.Data
                 new Posts { Content = "wpisujesz w ChatGPT co chcesz i dostajesz gotowe rozwiązanie", CreatedDate = DateTime.UtcNow, Edited = false, UserId = adek.Id, ThreadId = 2 },
                 new Posts { Content = "Zamykam temat - nie rozmawiamy tutaj o czarnej magii", CreatedDate = DateTime.UtcNow, Edited = false, UserId = mod.Id, ThreadId = 3 }
             );
-            //await context.SaveChangesAsync();
-            context.SaveChanges();
+            await context.SaveChangesAsync();
+            //context.SaveChanges();
         }
-
-
-
-        //public static async Task SeedPosts(IServiceProvider serviceProvider)
-        //{
-        //    using var context2 = new AppDbContext(
-        //    serviceProvider.GetRequiredService<DbContextOptions<AppDbContext>>());
-        //    var userManager2 = serviceProvider.GetRequiredService<UserManager<ForumUser>>();
-
-        //    if (await context2.Posts.AnyAsync())
-        //        return;
-
-        //    var admin2 = await userManager2.FindByEmailAsync("admin@example.com");
-        //    var mod2 = await userManager2.FindByEmailAsync("moderator@example.com");
-        //    var user2 = await userManager2.FindByEmailAsync("uzytkownik@example.com");
-        //    var kacper2 = await userManager2.FindByEmailAsync("Kacper@google.com");
-        //    var baran2 = await userManager2.FindByEmailAsync("Blazej@wp.pl");
-        //    var adek2 = await userManager2.FindByEmailAsync("Adrian@xyz.com");
-
-        //    context2.Posts.AddRange(
-        //        new Posts { Id = 1, Content = "klikasz utwórz projekt i wybierasz ASP.NET core MVC, tyle", CreatedDate = DateTime.UtcNow, Edited = false, UserId = admin2.Id, ThreadId = 1 },
-        //        new Posts { Id = 2, Content = "wpisujesz w ChatGPT co chcesz i dostajesz gotowe rozwiązanie", CreatedDate = DateTime.UtcNow, Edited = false, UserId = mod2.Id, ThreadId = 2 },
-        //        new Posts { Id = 3, Content = "Zamykam temat - nie rozmawiamy tutaj o czarnej magii", CreatedDate = DateTime.UtcNow, Edited = false, UserId = adek2.Id, ThreadId = 3 }
-        //    );
-        //    await context2.SaveChangesAsync();
-        //}
-
-
-
     }
 }

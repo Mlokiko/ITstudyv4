@@ -1,21 +1,33 @@
-﻿@model ITstudyv4.Models.ForumUser
-
+﻿@model ITstudyv4.ViewModels.UserWithRolesVM
 @{
     ViewData["Title"] = "Usuń Użytkownika";
 }
-<h2 class="text-center text-info">Usuń Użytkownika</h2>
 
-<h3>Jesteś pewien że chcesz usunąć tego użytkownika?</h3>
+<div class="text-center">
+    <h2 class="text-info">Usuń Użytkownika</h2>
+    <br />
 
-<div>
+    <h3>Jesteś pewien że chcesz usunąć tego użytkownika?</h3>
+
     <p>Nazwa użytkownika: @Model.UserName</p>
     <p>Email: @Model.Email</p>
-    <p>Zdjęcie profilowe: @Model.ProfilePictureURL</p>
-    <p>Ranga: TODO</p>
-</div>
+    <p>
+        Zdjęcie profilowe:         <div class="form-group">
+            @if (!string.IsNullOrEmpty(Model.ProfilePictureURL))
+            {
+                <img src="@Model.ProfilePictureURL" alt="Zdjęcie profilowe" class="img-thumbnail align-items-center rounded-circle" style="width: 150px; height: 150px; object-fit:cover;" />
+            }
+            else
+            {
+                <p>Nie ustawiono zdjęcia profilowego.</p>
+            }
+        </div>
+    </p>
+    <p>Ranga: @Model.Role</p>
 
-<form asp-action="DeleteUserConfirmed" method="post">
-    <input type="hidden" name="id" value="@Model.Id" />
-    <button type="submit" class="btn btn-danger">Usuń</button>
-    <a asp-action="ShowAllUsers" class="btn btn-secondary">Anuluj</a>
-</form>
+    <form asp-action="DeleteUserConfirmed" method="post">
+        <input type="hidden" name="id" value="@Model.UserId" />
+        <button type="submit" class="btn btn-danger">Usuń</button>
+        <a asp-action="ShowAllUsers" class="btn btn-secondary">Anuluj</a>
+    </form>
+</div>

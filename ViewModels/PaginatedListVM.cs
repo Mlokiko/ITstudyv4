@@ -2,7 +2,7 @@
 {
     public class PaginatedListVM<T>
     {
-        public IEnumerable<T> Items { get; set; }
+        public IEnumerable<T>? Items { get; set; }
         public int CurrentPage { get; set; }
         public int PageSize { get; set; }
         public int TotalItems { get; set; }

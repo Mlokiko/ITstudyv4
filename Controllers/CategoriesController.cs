@@ -18,6 +18,7 @@ namespace ITstudyv4.Controllers
             _context = context;
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> ShowAllCategories(int pageNumber = 1, int pageSize = 10)
         {
             var query = _context.Categories.OrderBy(i => i.Id);
@@ -167,7 +168,7 @@ namespace ITstudyv4.Controllers
             return View(category);
         }
 
-        [HttpPost, ActionName("DeleteCategory")]
+        [HttpPost, ActionName("DeleteCategory")] // inny sposób na wskazanie akcji
         [Authorize(Roles = "Admin, Moderator")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

@@ -21,6 +21,7 @@ namespace ITstudyv4.Controllers
             _logger = logger;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
             ViewBag.LatestThreads = _context.Threads
@@ -38,6 +39,7 @@ namespace ITstudyv4.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         public IActionResult Privacy()
         {
             return View();

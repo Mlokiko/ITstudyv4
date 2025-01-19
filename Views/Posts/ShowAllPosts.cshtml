@@ -1,6 +1,5 @@
 ﻿@using System.Security.Claims
 @model IEnumerable<Posts>
-
 @{
     ViewData["Title"] = "Posty";
 }
@@ -20,7 +19,7 @@
         <div class="post-container">
             <div class="user-info">
                 <p>@post.User?.UserName</p>
-                <img src="@post.User?.ProfilePictureURL" alt="Zdjęcie profilowe" class="img-thumbnail align-items-center rounded-circle" style="max-width: 50px;" />
+                <img src="@post.User?.ProfilePictureURL" alt="Zdjęcie profilowe" class="img-thumbnail align-items-center rounded-circle" style="width: 50px; height: 50px; object-fit:cover;" />
             </div>
             <div class="post-content">
                 <div class="post-info">
@@ -38,32 +37,3 @@
         </div>
     }
 </div>
-
-@* <table class="table">
-    <thead>
-        <tr>
-            <th>Treść</th>
-            <th>Użytkownik</th>
-            <th>Data utworzenia</th>
-            <th>Edytowany</th>
-        </tr>
-    </thead>
-    <tbody>
-        <a asp-action="AddNewPost" asp-route-threadId="@ViewBag.ThreadId" class="btn btn-primary">Dodaj nowy post</a>
-        @foreach (var post in Model)
-        {
-            <tr>
-                <td>@post.Content</td>
-                <td>@post.User?.UserName</td>
-                <td>@post.CreatedDate.ToShortDateString()</td>
-                <td>@(post.Edited ? "Tak" : "Nie")</td>
-
-                @if (post.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier) || User.IsInRole("Admin") || User.IsInRole("Moderator"))
-                {
-                    <td><a asp-controller="Posts" asp-action="EditPost" asp-route-id="@post.Id">Edytuj post</a></td>
-                    <td><a asp-controller="Posts" asp-action="DeletePost" asp-route-id="@post.Id">Usuń post</a></td>
-                }
-            </tr>
-        }
-    </tbody>
-</table> *@
