@@ -1,5 +1,6 @@
 ﻿using ITstudyv4.Data;
 using ITstudyv4.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -17,6 +18,7 @@ namespace ITstudyv4.Controllers
             _context = context;
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> ShowAllPosts(int threadId)
         {
             var thread = await _context.Threads
@@ -193,7 +195,5 @@ namespace ITstudyv4.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(ShowAllPosts), new { threadId = post.ThreadId });
         }
-
-
     }
 }

@@ -25,7 +25,7 @@ namespace ITstudyv4.Data
                 .IsRequired()
                 .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-            // Opis categori wymagany i nie większy od 255, Name wymagane
+            // Opis kategorii wymagany i nie większy od 255
             builder.Entity<Categories>()
                 .Property(c => c.Description)
                 .IsRequired()
@@ -72,7 +72,7 @@ namespace ITstudyv4.Data
                 .IsRequired()
                 .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-            // Czy to jest potrzebne? chat napisał to w momencie jak probowałem relacje naprawić
+            // Czy to jest potrzebne? XXX napisał to w momencie jak probowałem relacje naprawić
             base.OnModelCreating(builder);
         }
     }

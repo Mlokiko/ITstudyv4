@@ -1,6 +1,7 @@
 ﻿using ITstudyv4.Data;
 using ITstudyv4.Models;
 using ITstudyv4.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,20 +22,7 @@ namespace ITstudyv4.Controllers
             this.userManager = userManager;
         }
 
-        public async Task<IActionResult> ShowThreadsInCategoryy(int categoryId)
-        {
-            var threads = await _context.Threads
-                .Where(t => t.CategoryId == categoryId)
-                .Include(t => t.User)
-                .ToListAsync();
-
-            ViewBag.CategoryId = categoryId;
-            ViewBag.CategoryName = (await _context.Categories.FindAsync(categoryId))?.Name;
-
-            return View(threads);
-        }
-
-
+        [AllowAnonymous]
         public async Task<IActionResult> ShowThreadsInCategory(int categoryId, int pageNumber = 1, int pageSize = 10)
         {
             var query = _context.Threads
@@ -63,21 +51,14 @@ namespace ITstudyv4.Controllers
             return View(viewModel);
         }
 
-
+        [Authorize]
         public IActionResult AddNewThread(int categoryId)
         {
             ViewBag.CategoryId = categoryId;
             return View();
         }
 
-        //public async Task<IActionResult> ShowAllThreads()
-        //{
-        //    var threads = await _context.Threads
-        //        .Include(t => t.User)
-        //        .ToListAsync();
-
-        //    return View(threads);
-        //}
+        [AllowAnonymous]
         public async Task<IActionResult> ShowAllThreads(int pageNumber = 1, int pageSize = 10)
         {
             //paginacja
@@ -102,8 +83,8 @@ namespace ITstudyv4.Controllers
             return View(viewModel);
         }
 
-
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddNewThread(int categoryId, [Bind("Title")] Threads thread)
         {
@@ -135,8 +116,7 @@ namespace ITstudyv4.Controllers
             return View(thread);
         }
 
-
-
+        [Authorize]
         public async Task<IActionResult> EditThread(int? id)
         {
             if (id == null)
@@ -160,9 +140,8 @@ namespace ITstudyv4.Controllers
             return View(thread);
         }
 
-
-
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditThread(int id, [Bind("Id,Title")] Threads thread)
         {
@@ -209,43 +188,7 @@ namespace ITstudyv4.Controllers
             return View(thread);
         }
 
-        public async Task<IActionResult> ManageThread()
-        {
-            var threads = await _context.Threads.ToListAsync();
-            return View(threads);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ManageThread(int id, [Bind("id,Title")] Threads thread)
-        {
-            if (id != thread.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(thread);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!_context.Threads.Any(x => x.Id == thread.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(ManageThread));
-            }
-            return View(thread);
-        }
+        [Authorize]
         public async Task<IActionResult> DeleteThread(int? id)
         {
             if (id == null)
@@ -290,7 +233,5 @@ namespace ITstudyv4.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(ShowThreadsInCategory), new { categoryId = thread.CategoryId });
         }
-
-
     }
 }

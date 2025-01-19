@@ -21,6 +21,7 @@ namespace ITstudyv4.Controllers
             _logger = logger;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
             ViewBag.AllThreads = _context.Threads.Include(t => t.User).ToList();
@@ -28,6 +29,7 @@ namespace ITstudyv4.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         public IActionResult Privacy()
         {
             return View();

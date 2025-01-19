@@ -2,7 +2,7 @@
     ViewData["Title"] = "dev";
 }
 
-<p>To potem pozmieniamy, aktualnie umieszczam tutaj wszystkie dostępne linki/podstrony jakie będziemy potrzebować.</p>
+<p>Cheat sheet dla naszej strony. Zostawiamy to tutaj aby prościej można było testować stronkę</p>
 <br />
 <h2>Podstrony do stworzenia:</h2>
 <br />
@@ -36,10 +36,7 @@
 <h3>Dostępne tylko dla admina:</h3>
 <ul>
     <li class="nav-item">
-        <a class="nav-link text-info" asp-area="" asp-controller="Threads" asp-action="AddNewThread">Stwórz Temat</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-info" asp-area="" asp-controller="Threads" asp-action="ManageThreads">Zarządzaj Tematami</a>
+        <a class="nav-link text-info" asp-area="" asp-controller="Threads" asp-action="AddNewThread">Stwórz Temat</a>(działa poprawnie tylko z poziomu kategorii, stąd nie przypisze się do kategorii)
     </li>
     <li class="nav-item">
         <a class="nav-link text-info" asp-area="" asp-controller="Categories" asp-action="AddNewCategory">Stwórz kategorię</a>
@@ -51,6 +48,6 @@
         <a class="nav-link text-info" asp-area="" asp-controller="Admin" asp-action="ShowAllUsers">Pokaż wszystkich użytkowników</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-info" asp-area="" asp-controller="Admin" asp-action="EditUser">Zarządzaj użytkownikiem (zmień rolę, usuń itd)</a>
+        <a class="nav-link text-info" asp-area="" asp-controller="Admin" asp-action="EditUser">Zarządzaj użytkownikiem</a>(działa poprawnie tylko z poziomu wszystkich użytkowników)
     </li>
 </ul>
