@@ -121,24 +121,25 @@ namespace ITstudyv4.Controllers
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userIsAdminOrModerator = User.IsInRole("Admin") || User.IsInRole("Moderator");
-            if (post.UserId != userId && !userIsAdminOrModerator)
+
+            if (originalPost.UserId != userId && !userIsAdminOrModerator)
             {
                 return Forbid();
             }
 
             originalPost.Content = post.Content;
+            originalPost.Edited = true;
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    post.Edited = true;
                     _context.Update(originalPost);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!_context.Threads.Any(e => e.Id == post.Id))
+                    if (!_context.Posts.Any(e => e.Id == post.Id))
                     {
                         return NotFound();
                     }
@@ -147,10 +148,13 @@ namespace ITstudyv4.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(ShowAllPosts), new { threadId = originalPost.ThreadId });
             }
+
             return View(post);
         }
+
 
         public async Task<IActionResult> DeletePost(int? id)
         {
@@ -198,3 +202,5 @@ namespace ITstudyv4.Controllers
         }
     }
 }
+
+
