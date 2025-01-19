@@ -132,6 +132,7 @@ namespace ITstudyv4.Controllers
             {
                 try
                 {
+                    post.Edited = true;
                     _context.Update(originalPost);
                     await _context.SaveChangesAsync();
                 }

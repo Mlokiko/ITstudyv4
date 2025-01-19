@@ -249,6 +249,12 @@ body {
     color: #666;
 }
 
+.thread-con-left {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
 .thread-options {
     display: flex;
     flex-wrap: wrap;

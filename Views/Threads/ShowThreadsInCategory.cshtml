@@ -17,13 +17,18 @@
     @foreach (var thread in Model.Items)
     {
         <div class="thread-container">
-            <div class="thread-content">
-                <p>
-                    <a asp-controller="Posts" asp-action="ShowAllPosts" asp-route-threadId="@thread.Id">
-                        @thread.Title
-                    </a>
-                </p>
-                <p>Przez @thread.User?.UserName, @thread.CreatedAt.ToShortDateString()</p>
+            <div class="thread-con-left">
+                <div class="thread-avatar">
+                    <img src="@thread.User?.ProfilePictureURL" alt="Zdjęcie profilowe" class="img-thumbnail align-items-center rounded-circle" style="max-width: 50px;" />
+                </div>
+                <div class="thread-content">
+                    <p>
+                        <a asp-controller="Posts" asp-action="ShowAllPosts" asp-route-threadId="@thread.Id">
+                            @thread.Title
+                        </a>
+                    </p>
+                    <p>Przez @thread.User?.UserName, @thread.CreatedAt.ToShortDateString()</p>
+                </div>
             </div>
 
             <div class="thread-info">

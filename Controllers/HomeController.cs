@@ -24,8 +24,18 @@ namespace ITstudyv4.Controllers
         [AllowAnonymous]
         public IActionResult Index()
         {
-            ViewBag.AllThreads = _context.Threads.Include(t => t.User).ToList();
+            ViewBag.LatestThreads = _context.Threads
+                .Include(t => t.User)
+                .OrderByDescending(t => t.CreatedAt)
+                .Take(10)
+                .ToList();
+            ViewBag.PopularThreads = _context.Threads
+                .Include(t => t.User)
+                .OrderByDescending(t => t.Views) 
+                .Take(10)
+                .ToList();
             ViewBag.AllCategories = _context.Categories.ToList();
+
             return View();
         }
 

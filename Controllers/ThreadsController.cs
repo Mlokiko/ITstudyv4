@@ -86,7 +86,7 @@ namespace ITstudyv4.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddNewThread(int categoryId, [Bind("Title")] Threads thread)
+        public async Task<IActionResult> AddNewThread(int categoryId, [Bind("Title")] Threads thread, string Content)
         {
             var category = await _context.Categories.FindAsync(categoryId);
             if (category == null)
@@ -105,10 +105,25 @@ namespace ITstudyv4.Controllers
                     ViewBag.CategoryId = thread.CategoryId;
                     return View(thread);
                 }
+
                 thread.UserId = userId;
                 thread.CategoryId = categoryId;
-                _context.Add(thread);
+                thread.CreatedAt = DateTime.UtcNow;
+                _context.Threads.Add(thread);
                 await _context.SaveChangesAsync();
+
+                var post = new Posts
+                {
+                    UserId = userId,
+                    ThreadId = thread.Id,
+                    Content = Content,
+                    CreatedDate = DateTime.UtcNow,
+                    Edited = false,
+                };
+
+                _context.Posts.Add(post);
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(ShowThreadsInCategory), new { categoryId });
             }
 

@@ -23,7 +23,7 @@
             </div>
             <div class="post-content">
                 <div class="post-info">
-                    <span>Opublikowano @post.CreatedDate</span>
+                    <span>Opublikowano @post.CreatedDate @if (post.Edited) {<span>(Edytowany)</span>}</span>
                     @if (post.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier) || User.IsInRole("Admin") || User.IsInRole("Moderator"))
                     {
                         <a class="post-btn" asp-controller="Posts" asp-action="EditPost" asp-route-id="@post.Id">Edytuj post</a>
