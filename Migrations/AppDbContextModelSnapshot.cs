@@ -140,7 +140,8 @@ namespace ITstudyv4.Migrations
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
 
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
@@ -175,9 +176,6 @@ namespace ITstudyv4.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AnswersId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("CategoryId")
                         .HasColumnType("integer");
 
@@ -197,8 +195,6 @@ namespace ITstudyv4.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AnswersId");
 
                     b.HasIndex("CategoryId");
 
@@ -359,10 +355,6 @@ namespace ITstudyv4.Migrations
 
             modelBuilder.Entity("ITstudyv4.Models.Threads", b =>
                 {
-                    b.HasOne("ITstudyv4.Models.Posts", "Answers")
-                        .WithMany()
-                        .HasForeignKey("AnswersId");
-
                     b.HasOne("ITstudyv4.Models.Categories", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
@@ -372,8 +364,6 @@ namespace ITstudyv4.Migrations
                     b.HasOne("ITstudyv4.Models.ForumUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
-
-                    b.Navigation("Answers");
 
                     b.Navigation("Category");
 
